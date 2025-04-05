@@ -1,5 +1,5 @@
 package br.com.hackaton.priorizasus.enums;
 
-public enum StatusAtendimento {
+public enum StatusAtendimentoEnum {
     PENDENTE, EM_ATENDIMENTO, CONCLUIDO, CANCELADO;
 }
