@@ -1,11 +1,10 @@
 package br.com.hackaton.priorizasus.entities;
 
-import br.com.hackaton.priorizasus.enums.StatusAtendimento;
+import br.com.hackaton.priorizasus.enums.StatusAtendimentoEnum;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -29,7 +28,7 @@ public class FilaAtendimento {
 
     @Enumerated(EnumType.STRING)
     @NotNull
-    private StatusAtendimento statusAtendimento;
+    private StatusAtendimentoEnum statusAtendimentoEnum;
 
     private int pesoFila;
 
@@ -39,9 +38,9 @@ public class FilaAtendimento {
         if (Boolean.TRUE.equals(atendimentoAdministrativo)) {
             int pesoBase = 5;
             this.pesoFila = pesoBase + (int) (minutosEspera * 0.5);
-        } else if (triagem != null && triagem.getNivelPrioridade() != null) {
+        } else if (triagem != null && triagem.getNivelPrioridadeEnum() != null) {
             int prioridadePeso;
-            switch (triagem.getNivelPrioridade()) {
+            switch (triagem.getNivelPrioridadeEnum()) {
                 case VERMELHO -> prioridadePeso = 100;
                 case LARANJA -> prioridadePeso = 70;
                 case AMARELO -> prioridadePeso = 40;

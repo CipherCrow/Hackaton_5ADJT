@@ -1,12 +1,10 @@
 package br.com.hackaton.priorizasus.entities;
 
-import br.com.hackaton.priorizasus.enums.NivelPrioridade;
+import br.com.hackaton.priorizasus.enums.NivelPrioridadeEnum;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -30,7 +28,7 @@ public class Triagem {
 
     @Enumerated(EnumType.STRING)
     @NotNull
-    private NivelPrioridade nivelPrioridade;
+    private NivelPrioridadeEnum nivelPrioridadeEnum;
 
     @PastOrPresent
     private LocalDateTime dataTriagem;
@@ -52,15 +50,15 @@ public class Triagem {
                 .orElse(1);
 
         if (maiorGravidade == 5) {
-            this.nivelPrioridade = NivelPrioridade.VERMELHO;
+            this.nivelPrioridadeEnum = NivelPrioridadeEnum.VERMELHO;
         } else if (maiorGravidade == 4) {
-            this.nivelPrioridade = NivelPrioridade.LARANJA;
+            this.nivelPrioridadeEnum = NivelPrioridadeEnum.LARANJA;
         } else if (maiorGravidade == 3) {
-            this.nivelPrioridade = NivelPrioridade.AMARELO;
+            this.nivelPrioridadeEnum = NivelPrioridadeEnum.AMARELO;
         } else if (maiorGravidade == 2) {
-            this.nivelPrioridade = NivelPrioridade.VERDE;
+            this.nivelPrioridadeEnum = NivelPrioridadeEnum.VERDE;
         } else {
-            this.nivelPrioridade = NivelPrioridade.AZUL;
+            this.nivelPrioridadeEnum = NivelPrioridadeEnum.AZUL;
         }
     }
 }

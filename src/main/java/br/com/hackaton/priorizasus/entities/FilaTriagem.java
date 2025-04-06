@@ -1,7 +1,7 @@
 package br.com.hackaton.priorizasus.entities;
 
+import br.com.hackaton.priorizasus.enums.StatusTriagemEnum;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
 import lombok.*;
@@ -12,25 +12,19 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AtendimentoHistorico {
+public class FilaTriagem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
-    @NotNull
-    private Triagem triagem;
-
-    @NotBlank
-    private String diagnostico;
-
-    @NotBlank
-    private String prescricao;
-
-    @PastOrPresent
-    private LocalDateTime dataAtendimento;
-
     @ManyToOne
     @NotNull
-    private ProfissionalSaude profissional;
+    private Paciente paciente;
+
+    @Enumerated(EnumType.STRING)
+    @NotNull
+    private StatusTriagemEnum statusTriagem;
+
+    @PastOrPresent
+    private LocalDateTime horarioEntrada;
 }

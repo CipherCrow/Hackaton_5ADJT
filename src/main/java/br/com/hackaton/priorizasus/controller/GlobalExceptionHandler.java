@@ -30,6 +30,7 @@ public class GlobalExceptionHandler {
                 errors.put(violation.getPropertyPath().toString(), violation.getMessage()));
         return ResponseEntity.badRequest().body(errors);
     }
+
     // Não encontrar com finds
     @ExceptionHandler(EntidadeNaoEncontradaException.class)
     public ResponseEntity<String> handleEntidadeNaoEncontrada(EntidadeNaoEncontradaException ex) {
