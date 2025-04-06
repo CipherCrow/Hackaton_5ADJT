@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-public class RegistrarChegadaUseCaseTest {
+class RegistrarChegadaUseCaseTest {
 
     @Mock
     private PacienteRepository pacienteRepository;
@@ -29,13 +29,16 @@ public class RegistrarChegadaUseCaseTest {
     @Mock
     private FilaAtendimentoRepository filaAtendimentoRepository;
 
-    @InjectMocks
     private RegistrarChegadaUseCase registrarChegadaUseCase;
 
     private AutoCloseable openMocks;
 
     @BeforeEach
     void setUp() {
+        registrarChegadaUseCase = new RegistrarChegadaUseCase(
+                pacienteRepository,
+                filaTriagemRepository,
+                filaAtendimentoRepository);
         openMocks = MockitoAnnotations.openMocks(this);
     }
 

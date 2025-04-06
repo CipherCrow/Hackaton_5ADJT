@@ -15,18 +15,18 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-public class CadastrarPacienteUseCaseTest {
+class CadastrarPacienteUseCaseTest {
 
     @Mock
     private PacienteRepository pacienteRepository;
 
-    @InjectMocks
     private CadastrarPacienteUseCase cadastrarPacienteUseCase;
 
     private AutoCloseable openMocks;
 
     @BeforeEach
     void setUp() {
+        cadastrarPacienteUseCase = new CadastrarPacienteUseCase(pacienteRepository);
         openMocks = MockitoAnnotations.openMocks(this);
     }
 

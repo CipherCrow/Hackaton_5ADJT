@@ -10,6 +10,7 @@ import br.com.hackaton.priorizasus.repository.FilaAtendimentoRepository;
 import br.com.hackaton.priorizasus.repository.FilaTriagemRepository;
 import br.com.hackaton.priorizasus.repository.PacienteRepository;
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
+@AllArgsConstructor
 public class RegistrarChegadaUseCase {
 
     private PacienteRepository pacienteRepository;

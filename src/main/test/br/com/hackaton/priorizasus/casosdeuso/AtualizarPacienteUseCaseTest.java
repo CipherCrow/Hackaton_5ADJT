@@ -4,8 +4,12 @@ import br.com.hackaton.priorizasus.dto.PacienteParaCadastrarDTO;
 import br.com.hackaton.priorizasus.entities.Paciente;
 import br.com.hackaton.priorizasus.exception.EntidadeNaoEncontradaException;
 import br.com.hackaton.priorizasus.repository.PacienteRepository;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -16,8 +20,23 @@ import static org.mockito.Mockito.*;
 
 class AtualizarPacienteUseCaseTest {
 
-    private final PacienteRepository pacienteRepository = mock(PacienteRepository.class);
-    private final AtualizarPacienteUseCase atualizarPacienteUseCase = new AtualizarPacienteUseCase(pacienteRepository);
+    @Mock
+    private PacienteRepository pacienteRepository;
+
+    private AtualizarPacienteUseCase atualizarPacienteUseCase;
+
+    private AutoCloseable openMocks;
+
+    @BeforeEach
+    void setUp() {
+        atualizarPacienteUseCase = new AtualizarPacienteUseCase(pacienteRepository);
+        openMocks = MockitoAnnotations.openMocks(this);
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        openMocks.close();
+    }
 
     @Nested
     class Atualizar {
