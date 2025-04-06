@@ -12,8 +12,6 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Setter
-@Getter
 public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

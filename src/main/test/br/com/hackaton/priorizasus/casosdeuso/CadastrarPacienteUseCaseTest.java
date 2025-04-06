@@ -26,8 +26,8 @@ class CadastrarPacienteUseCaseTest {
 
     @BeforeEach
     void setUp() {
-        cadastrarPacienteUseCase = new CadastrarPacienteUseCase(pacienteRepository);
         openMocks = MockitoAnnotations.openMocks(this);
+        cadastrarPacienteUseCase = new CadastrarPacienteUseCase(pacienteRepository);
     }
 
     @AfterEach

@@ -6,15 +6,14 @@ import br.com.hackaton.priorizasus.entities.Paciente;
 import br.com.hackaton.priorizasus.mapper.PacienteMapper;
 import br.com.hackaton.priorizasus.repository.PacienteRepository;
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class CadastrarPacienteUseCase {
     private final PacienteRepository pacienteRepository;
-
-    public CadastrarPacienteUseCase(PacienteRepository pacienteRepository) {
-        this.pacienteRepository = pacienteRepository;
-    }
 
     @Transactional
     public PacienteCadastradoDTO cadastrar(PacienteParaCadastrarDTO dto) {

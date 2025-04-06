@@ -5,15 +5,14 @@ import br.com.hackaton.priorizasus.entities.Paciente;
 import br.com.hackaton.priorizasus.exception.EntidadeNaoEncontradaException;
 import br.com.hackaton.priorizasus.repository.PacienteRepository;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class AtualizarPacienteUseCase {
-    private final PacienteRepository pacienteRepository;
 
-    public AtualizarPacienteUseCase(PacienteRepository pacienteRepository) {
-        this.pacienteRepository = pacienteRepository;
-    }
+    private final PacienteRepository pacienteRepository;
 
     @Transactional
     public void atualizar(Long id, PacienteParaCadastrarDTO dto) {

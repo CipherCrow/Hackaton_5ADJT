@@ -8,7 +8,6 @@ import br.com.hackaton.priorizasus.repository.FilaAtendimentoRepository;
 import br.com.hackaton.priorizasus.repository.FilaTriagemRepository;
 import br.com.hackaton.priorizasus.repository.PacienteRepository;
 import org.junit.jupiter.api.*;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -35,11 +34,11 @@ class RegistrarChegadaUseCaseTest {
 
     @BeforeEach
     void setUp() {
+        openMocks = MockitoAnnotations.openMocks(this);
         registrarChegadaUseCase = new RegistrarChegadaUseCase(
                 pacienteRepository,
                 filaTriagemRepository,
                 filaAtendimentoRepository);
-        openMocks = MockitoAnnotations.openMocks(this);
     }
 
     @AfterEach

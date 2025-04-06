@@ -12,8 +12,6 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Setter
-@Getter
 public class FilaAtendimento {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

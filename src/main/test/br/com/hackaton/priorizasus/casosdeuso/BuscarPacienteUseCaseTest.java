@@ -28,8 +28,8 @@ class BuscarPacienteUseCaseTest {
 
     @BeforeEach
     void setUp() {
-        buscarPacienteUseCase = new BuscarPacienteUseCase(pacienteRepository);
         openMocks = MockitoAnnotations.openMocks(this);
+        buscarPacienteUseCase = new BuscarPacienteUseCase(pacienteRepository);
     }
 
     @AfterEach

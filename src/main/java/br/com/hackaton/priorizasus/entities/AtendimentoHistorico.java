@@ -12,8 +12,6 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Setter
-@Getter
 public class AtendimentoHistorico {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

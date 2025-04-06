@@ -20,17 +20,17 @@ import static org.mockito.Mockito.*;
 
 class AtualizarPacienteUseCaseTest {
 
+    private AtualizarPacienteUseCase atualizarPacienteUseCase;
+
     @Mock
     private PacienteRepository pacienteRepository;
-
-    private AtualizarPacienteUseCase atualizarPacienteUseCase;
 
     private AutoCloseable openMocks;
 
     @BeforeEach
     void setUp() {
-        atualizarPacienteUseCase = new AtualizarPacienteUseCase(pacienteRepository);
         openMocks = MockitoAnnotations.openMocks(this);
+        atualizarPacienteUseCase = new AtualizarPacienteUseCase(pacienteRepository);
     }
 
     @AfterEach

@@ -15,8 +15,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Setter
-@Getter
 public class Paciente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,10 +31,7 @@ public class Paciente {
     @Past
     private LocalDateTime dataNascimento;
 
-    @NotBlank
     private String telefone;
-
-    @NotBlank
     private String endereco;
 
     @OneToOne

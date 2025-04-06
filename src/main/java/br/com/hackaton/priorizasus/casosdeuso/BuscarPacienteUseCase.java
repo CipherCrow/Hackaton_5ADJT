@@ -5,15 +5,13 @@ import br.com.hackaton.priorizasus.entities.Paciente;
 import br.com.hackaton.priorizasus.exception.EntidadeNaoEncontradaException;
 import br.com.hackaton.priorizasus.mapper.PacienteMapper;
 import br.com.hackaton.priorizasus.repository.PacienteRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class BuscarPacienteUseCase {
     private final PacienteRepository pacienteRepository;
-
-    public BuscarPacienteUseCase(PacienteRepository pacienteRepository) {
-        this.pacienteRepository = pacienteRepository;
-    }
 
     public PacienteCadastradoDTO buscarPorId(Long id) {
         Paciente paciente = pacienteRepository.findById(id)

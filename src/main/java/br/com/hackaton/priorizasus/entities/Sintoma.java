@@ -13,8 +13,6 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Setter
-@Getter
 public class Sintoma {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

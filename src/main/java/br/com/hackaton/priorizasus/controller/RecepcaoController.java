@@ -11,9 +11,10 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+@Controller
 @RequestMapping("/recepcao")
 @RequiredArgsConstructor
 public class RecepcaoController {
@@ -22,7 +23,6 @@ public class RecepcaoController {
     private final CadastrarPacienteUseCase cadastrarPacienteUseCase;
     private final BuscarPacienteUseCase buscarPacienteUseCase;
     private final AtualizarPacienteUseCase atualizarPacienteUseCase;
-
 
 
     @PostMapping("/registrarChegada")
