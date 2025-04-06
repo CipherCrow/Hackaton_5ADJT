@@ -3,17 +3,17 @@ package br.com.hackaton.priorizasus.entities;
 import br.com.hackaton.priorizasus.enums.PermissaoEnum;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.*;
 
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Setter
+@Getter
 public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

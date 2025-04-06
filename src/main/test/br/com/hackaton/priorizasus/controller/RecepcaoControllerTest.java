@@ -1,7 +1,12 @@
 package br.com.hackaton.priorizasus.controller;
 
-import br.com.hackaton.priorizasus.casosdeuso.*;
-import br.com.hackaton.priorizasus.dto.*;
+import br.com.hackaton.priorizasus.casosdeuso.AtualizarPacienteUseCase;
+import br.com.hackaton.priorizasus.casosdeuso.BuscarPacienteUseCase;
+import br.com.hackaton.priorizasus.casosdeuso.CadastrarPacienteUseCase;
+import br.com.hackaton.priorizasus.casosdeuso.RegistrarChegadaUseCase;
+import br.com.hackaton.priorizasus.dto.PacienteCadastradoDTO;
+import br.com.hackaton.priorizasus.dto.PacienteParaCadastrarDTO;
+import br.com.hackaton.priorizasus.dto.RegistroChegadaDTO;
 import br.com.hackaton.priorizasus.exception.EntidadeNaoEncontradaException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
@@ -10,9 +15,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
