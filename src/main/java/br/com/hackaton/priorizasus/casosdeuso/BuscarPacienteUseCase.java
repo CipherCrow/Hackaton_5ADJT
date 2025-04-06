@@ -18,5 +18,11 @@ public class BuscarPacienteUseCase {
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Paciente não encontrado"));
         return PacienteMapper.toDTO(paciente);
     }
+
+    public PacienteCadastradoDTO buscarPorCpf(String cpf) {
+        Paciente paciente = pacienteRepository.findByCpf(cpf)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Paciente não encontrado"));
+        return PacienteMapper.toDTO(paciente);
+    }
 }
 

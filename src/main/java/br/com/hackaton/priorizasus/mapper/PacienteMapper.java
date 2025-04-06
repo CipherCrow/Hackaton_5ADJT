@@ -6,6 +6,10 @@ import br.com.hackaton.priorizasus.entities.Paciente;
 
 public class PacienteMapper {
 
+    private PacienteMapper(){
+        throw new IllegalStateException("Classe de Utilidade!");
+    }
+
     public static Paciente toEntity(PacienteParaCadastrarDTO dto) {
         return Paciente.builder()
                 .nome(dto.nome())
