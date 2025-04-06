@@ -1,0 +1,24 @@
+package br.com.hackaton.priorizasus.casosdeuso;
+
+import br.com.hackaton.priorizasus.dto.PacienteCadastradoDTO;
+import br.com.hackaton.priorizasus.entities.Paciente;
+import br.com.hackaton.priorizasus.exception.EntidadeNaoEncontradaException;
+import br.com.hackaton.priorizasus.mapper.PacienteMapper;
+import br.com.hackaton.priorizasus.repository.PacienteRepository;
+import org.springframework.stereotype.Service;
+
+@Service
+public class BuscarPacienteUseCase {
+    private final PacienteRepository pacienteRepository;
+
+    public BuscarPacienteUseCase(PacienteRepository pacienteRepository) {
+        this.pacienteRepository = pacienteRepository;
+    }
+
+    public PacienteCadastradoDTO buscarPorId(Long id) {
+        Paciente paciente = pacienteRepository.findById(id)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Paciente não encontrado"));
+        return PacienteMapper.toDTO(paciente);
+    }
+}
+
