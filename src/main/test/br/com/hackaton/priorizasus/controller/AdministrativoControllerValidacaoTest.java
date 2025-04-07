@@ -40,6 +40,14 @@ class AdministrativoControllerValidacaoTest {
     private VisualizarSintomaPorIdUseCase  visualizarSintomaPorIdUseCase;
     @Mock
     private AtualizarSintomaUseCase atualizarSintomaUseCase;
+    @Mock
+    private CadastrarProfissionalUseCase cadastrarProfissional;
+    @Mock
+    private BuscarTodosProfissionaisUseCase buscarTodosProfissionaisUseCase;
+    @Mock
+    private BuscarProfissionalPorIdUseCase buscarProfissionalPorIdUseCase;
+    @Mock
+    private AtualizarProfissionalUseCase atualizarProfissionalUseCase;
 
     private AutoCloseable openMocks;
 
@@ -57,7 +65,11 @@ class AdministrativoControllerValidacaoTest {
                 cadastrarSintomaUseCase,
                 visualizarTodosOsSintomasUseCase,
                 visualizarSintomaPorIdUseCase,
-                atualizarSintomaUseCase
+                atualizarSintomaUseCase,
+                cadastrarProfissional,
+                buscarTodosProfissionaisUseCase,
+                buscarProfissionalPorIdUseCase,
+                atualizarProfissionalUseCase
         );
         mockMvc = MockMvcBuilders.standaloneSetup(administrativoController).setControllerAdvice(GlobalExceptionHandler.class).build();
     }
@@ -221,6 +233,61 @@ class AdministrativoControllerValidacaoTest {
                             .content(json))
                     .andExpect(status().isBadRequest())
                     .andExpect(content().string(containsString("Deve ter no maximo 5 de gravidade")));
+        }
+    }
+
+    @Nested
+    class ValidacaoCadastrarProfissional {
+
+        @Test
+        void deveRetornar400QuandoNomeEhInvalido() throws Exception {
+            String json = """
+                    {
+                      "nome": "",
+                      "crm": "CRM123",
+                      "especialidade": "Ortopedia"
+                    }
+                    """;
+
+            mockMvc.perform(post("/administrativo/cadastrarProfissional")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(json))
+                    .andExpect(status().isBadRequest())
+                    .andExpect(content().string(containsString("nome")));
+        }
+
+        @Test
+        void deveRetornar400QuandoCrmEhVazio() throws Exception {
+            String json = """
+                    {
+                      "nome": "Dra. Valéria",
+                      "crm": "",
+                      "especialidade": "Psicologia"
+                    }
+                    """;
+
+            mockMvc.perform(post("/administrativo/cadastrarProfissional")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(json))
+                    .andExpect(status().isBadRequest())
+                    .andExpect(content().string(containsString("crm")));
+        }
+
+        @Test
+        void deveRetornar400QuandoEspecialidadeEhVazia() throws Exception {
+            String json = """
+                    {
+                      "nome": "Dr. Cesar",
+                      "crm": "CRM1234",
+                      "especialidade": ""
+                    }
+                    """;
+
+            mockMvc.perform(post("/administrativo/cadastrarProfissional")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(json))
+                    .andExpect(status().isBadRequest())
+                    .andExpect(content().string(containsString("especialidade")));
         }
     }
 

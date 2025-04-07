@@ -46,6 +46,14 @@ class AdministrativoControllerTest {
     private VisualizarSintomaPorIdUseCase  visualizarSintomaPorIdUseCase;
     @Mock
     private AtualizarSintomaUseCase atualizarSintomaUseCase;
+    @Mock
+    private CadastrarProfissionalUseCase cadastrarProfissional;
+    @Mock
+    private BuscarTodosProfissionaisUseCase buscarTodosProfissionaisUseCase;
+    @Mock
+    private BuscarProfissionalPorIdUseCase buscarProfissionalPorIdUseCase;
+    @Mock
+    private AtualizarProfissionalUseCase atualizarProfissionalUseCase;
 
     private AutoCloseable openMocks;
 
@@ -63,7 +71,11 @@ class AdministrativoControllerTest {
                 cadastrarSintomaUseCase,
                 visualizarTodosOsSintomasUseCase,
                 visualizarSintomaPorIdUseCase,
-                atualizarSintomaUseCase
+                atualizarSintomaUseCase,
+                cadastrarProfissional,
+                buscarTodosProfissionaisUseCase,
+                buscarProfissionalPorIdUseCase,
+                atualizarProfissionalUseCase
                 );
         mockMvc = MockMvcBuilders.standaloneSetup(administrativoController).setControllerAdvice(GlobalExceptionHandler.class).build();
     }

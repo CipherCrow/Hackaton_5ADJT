@@ -1,10 +1,7 @@
 package br.com.hackaton.priorizasus.controller;
 
 import br.com.hackaton.priorizasus.casosdeuso.*;
-import br.com.hackaton.priorizasus.dto.PacienteCadastradoDTO;
-import br.com.hackaton.priorizasus.dto.PacienteParaCadastrarDTO;
-import br.com.hackaton.priorizasus.dto.SintomaDTO;
-import br.com.hackaton.priorizasus.dto.SintomaRequestDTO;
+import br.com.hackaton.priorizasus.dto.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -31,7 +28,10 @@ public class AdministrativoController {
     private final AtualizarSintomaUseCase atualizarSintomaUseCase;
 
     //Profissionais
-    //private final CadastrarProfissionalUseCase cadastrarProfissional;
+    private final CadastrarProfissionalUseCase cadastrarProfissional;
+    private final BuscarTodosProfissionaisUseCase buscarTodosProfissionaisUseCase;
+    private final BuscarProfissionalPorIdUseCase buscarProfissionalPorIdUseCase;
+    private final AtualizarProfissionalUseCase atualizarProfissionalUseCase;
 
     // Paciente
     @PostMapping("/cadastrarPaciente")
@@ -83,11 +83,28 @@ public class AdministrativoController {
         return ResponseEntity.ok("Sintoma atualizado com sucesso!");
     }
 
-    /*
+
     // Profissional de Saúde
-    @PostMapping("/cadastrarProfissionais")
+    @PostMapping("/cadastrarProfissional")
     public ResponseEntity<ProfissionalSaudeDTO> cadastrarProfissional(@RequestBody @Valid ProfissionalSaudeRequestDTO dto) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(cadastrarProfissional.executar(dto));
+        return ResponseEntity.status(HttpStatus.CREATED).body(cadastrarProfissional.cadastrar(dto));
     }
-    */
+
+    @GetMapping("/buscarTodosProfissionais")
+    public ResponseEntity<List<ProfissionalSaudeDTO>> buscarTodos() {
+        return ResponseEntity.ok(buscarTodosProfissionaisUseCase.buscarTodos());
+    }
+
+    @GetMapping("/buscarProfissional/{id}")
+    public ResponseEntity<ProfissionalSaudeDTO> buscarPorId(@PathVariable Long id) {
+        return ResponseEntity.ok(buscarProfissionalPorIdUseCase.buscarPorId(id));
+    }
+
+    @PutMapping("/atualizarProfissional/{id}")
+    public ResponseEntity<String> atualizarProfissional(
+            @PathVariable Long id,
+            @RequestBody @Valid ProfissionalSaudeRequestDTO dto) {
+        atualizarProfissionalUseCase.atualizar(id, dto);
+        return ResponseEntity.ok("Profissional atualizado com sucesso!");
+    }
 }
