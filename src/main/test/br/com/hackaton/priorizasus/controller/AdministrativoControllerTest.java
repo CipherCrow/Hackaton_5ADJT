@@ -1,9 +1,7 @@
 package br.com.hackaton.priorizasus.controller;
 
 import br.com.hackaton.priorizasus.casosdeuso.*;
-import br.com.hackaton.priorizasus.dto.PacienteCadastradoDTO;
-import br.com.hackaton.priorizasus.dto.PacienteParaCadastrarDTO;
-import br.com.hackaton.priorizasus.dto.SintomaDTO;
+import br.com.hackaton.priorizasus.dto.*;
 import br.com.hackaton.priorizasus.exception.EntidadeNaoEncontradaException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -21,7 +19,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
@@ -83,49 +80,6 @@ class AdministrativoControllerTest {
     @AfterEach
     void tearDown() throws Exception {
         openMocks.close();
-    }
-
-    @Nested
-    class ValidacaoCadastroPaciente {
-
-        @Test
-        void deveRetornar400QuandoNomeEhVazio() throws Exception {
-            PacienteParaCadastrarDTO dto = new PacienteParaCadastrarDTO(
-                    "", "12345678900", LocalDateTime.now().minusYears(20),
-                    "11999999999", "Rua Teste");
-
-            mockMvc.perform(post("/administrativo/cadastrarPaciente")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(objectMapper.writeValueAsString(dto)))
-                    .andExpect(status().isBadRequest())
-                    .andExpect(content().string(containsString("Nome é obrigatório")));
-        }
-
-        @Test
-        void deveRetornar400QuandoCpfEhVazio() throws Exception {
-            PacienteParaCadastrarDTO dto = new PacienteParaCadastrarDTO(
-                    "Galinacio", "", LocalDateTime.now().minusYears(20),
-                    "11999999999", "Rua Teste");
-
-            mockMvc.perform(post("/administrativo/cadastrarPaciente")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(objectMapper.writeValueAsString(dto)))
-                    .andExpect(status().isBadRequest())
-                    .andExpect(content().string(containsString("CPF é obrigatório")));
-        }
-
-        @Test
-        void deveRetornar400QuandoDataNascimentoEhFutura() throws Exception {
-            PacienteParaCadastrarDTO dto = new PacienteParaCadastrarDTO(
-                    "Fulano", "12345678900", LocalDateTime.now().plusDays(1),
-                    "11999999999", "Rua Teste");
-
-            mockMvc.perform(post("/administrativo/cadastrarPaciente")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(objectMapper.writeValueAsString(dto)))
-                    .andExpect(status().isBadRequest())
-                    .andExpect(content().string(containsString("Data de nascimento deve estar no passado")));
-        }
     }
 
     @Nested
@@ -328,5 +282,107 @@ class AdministrativoControllerTest {
                     .andExpect(status().isNotFound())
                     .andExpect(content().string("Sintoma não encontrado"));
         }
+    }
+
+    @Nested
+    class CadastrarProfissional {
+
+        @Test
+        void deveCadastrarComSucesso() throws Exception {
+            ProfissionalSaudeDTO response =
+                    new ProfissionalSaudeDTO(1L, "João", "12345", "Cardiologia");
+
+            when(cadastrarProfissional.cadastrar(any())).thenReturn(response);
+
+            String json = """
+                {
+                    "nome": "João",
+                    "crm": "12345",
+                    "especialidade": "Cardiologia"
+                }
+                """;
+
+            mockMvc.perform(post("/administrativo/cadastrarProfissional")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(json))
+                    .andExpect(status().isCreated())
+                    .andExpect(jsonPath("$.id").value(1L))
+                    .andExpect(jsonPath("$.nome").value("João"))
+                    .andExpect(jsonPath("$.crm").value("12345"))
+                    .andExpect(jsonPath("$.especialidade").value("Cardiologia"));
+
+            verify(cadastrarProfissional).cadastrar(any());
+        }
+    }
+
+    @Nested
+    class BuscarTodosProfissionais {
+
+        @Test
+        void deveRetornarListaDeProfissionais() throws Exception {
+            List<ProfissionalSaudeDTO> lista = List.of(
+                    new ProfissionalSaudeDTO(1L, "Maria", "98765", "Pediatria")
+            );
+
+            when(buscarTodosProfissionaisUseCase.buscarTodos()).thenReturn(lista);
+
+            mockMvc.perform(get("/administrativo/buscarTodosProfissionais"))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$[0].nome").value("Maria"));
+
+            verify(buscarTodosProfissionaisUseCase).buscarTodos();
+        }
+    }
+
+    @Nested
+    class BuscarProfissionalPorId {
+
+        @Test
+        void deveRetornarProfissionalPeloId() throws Exception {
+            ProfissionalSaudeDTO response = new ProfissionalSaudeDTO(1L, "Carlos", "11111", "Dermatologia");
+
+            when(buscarProfissionalPorIdUseCase.buscarPorId(1L)).thenReturn(response);
+
+            mockMvc.perform(get("/administrativo/buscarProfissional/1"))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.nome").value("Carlos"));
+
+            verify(buscarProfissionalPorIdUseCase).buscarPorId(1L);
+        }
+
+        @Test
+        void deveRetornarErro404SeProfissionalNaoExistir() throws Exception {
+            when(buscarProfissionalPorIdUseCase.buscarPorId(99L)).thenThrow(
+                    new EntidadeNaoEncontradaException("Profissional não encontrado")
+            );
+
+            mockMvc.perform(get("/administrativo/buscarProfissional/99"))
+                    .andExpect(status().isNotFound())
+                    .andExpect(content().string("Profissional não encontrado"));
+        }
+    }
+
+    @Nested
+    class AtualizarProfissional {
+
+        @Test
+        void deveAtualizarComSucesso() throws Exception {
+            String json = """
+                {
+                    "nome": "Joana",
+                    "crm": "55555",
+                    "especialidade": "Ortopedia"
+                }
+                """;
+
+            mockMvc.perform(put("/administrativo/atualizarProfissional/1")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(json))
+                    .andExpect(status().isOk())
+                    .andExpect(content().string("Profissional atualizado com sucesso!"));
+
+            verify(atualizarProfissionalUseCase).atualizar(eq(1L), any(ProfissionalSaudeRequestDTO.class));
+        }
+
     }
 }

@@ -291,4 +291,25 @@ class AdministrativoControllerValidacaoTest {
         }
     }
 
+    @Nested
+    class ValidacaoAtualizarProfissional {
+        @Test
+        void deveValidarCamposObrigatoriosNaAtualizacao() throws Exception {
+            String json = """
+                {
+                    "nome": "",
+                    "crm": "",
+                    "especialidade": ""
+                }
+                """;
+
+            mockMvc.perform(put("/administrativo/profissionais/1")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(json))
+                    .andExpect(status().isBadRequest())
+                    .andExpect(content().string(containsString("Nome é obrigatório")))
+                    .andExpect(content().string(containsString("CRM é obrigatório")))
+                    .andExpect(content().string(containsString("Especialidade é obrigatória")));
+        }
+    }
 }
