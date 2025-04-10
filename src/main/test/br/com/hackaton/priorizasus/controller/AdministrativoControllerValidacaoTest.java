@@ -303,11 +303,11 @@ class AdministrativoControllerValidacaoTest {
                 }
                 """;
 
-            mockMvc.perform(put("/administrativo/profissionais/1")
+            mockMvc.perform(put("/administrativo/atualizarProfissional/1")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(json))
                     .andExpect(status().isBadRequest())
-                    .andExpect(content().string(containsString("Nome é obrigatório")))
+                    .andExpect(content().string(containsString("Nome deve ter entre 2 e 100 caracteres")))
                     .andExpect(content().string(containsString("CRM é obrigatório")))
                     .andExpect(content().string(containsString("Especialidade é obrigatória")));
         }
