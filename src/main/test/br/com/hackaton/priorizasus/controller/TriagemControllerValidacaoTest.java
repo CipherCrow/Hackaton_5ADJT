@@ -13,10 +13,12 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.hamcrest.Matchers.containsString;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -69,5 +71,25 @@ class TriagemControllerValidacaoTest {
                     .andExpect(content().string(containsString("Valor inválido para o parâmetro: INVALIDO")));
         }
 
+    }
+
+    @Test
+    void ValidacaoRealizarTraigemdeveRetornar400QuandoDTOForInvalido() throws Exception {
+        // Falta pacienteId e sintomas estão vazios
+        String json = """
+                    {
+                        "pacienteId": null,
+                        "profissionalId": 10,
+                        "sintomas": [],
+                        "prioridadeManual": false
+                    }
+                    """;
+
+        mockMvc.perform(post("/triagem/realizar")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string(containsString("Paciente ID é obrigatório")))
+                .andExpect(content().string(containsString("Deve haver pelo menos um sintoma")));
     }
 }

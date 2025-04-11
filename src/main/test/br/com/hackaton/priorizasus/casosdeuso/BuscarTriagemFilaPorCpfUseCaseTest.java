@@ -62,7 +62,7 @@ class BuscarTriagemFilaPorCpfUseCaseTest {
         String cpf = "12345678900";
         FilaTriagem fila = criarFilaTriagem(1L, "Paciente CPF", cpf);
 
-        when(filaTriagemRepository.findByPacienteCpf(cpf)).thenReturn(Optional.of(fila));
+        when(filaTriagemRepository.findByPacienteCpfAndStatusTriagem(cpf,StatusTriagemEnum.AGUARDANDO)).thenReturn(Optional.of(fila));
 
         // Act
         FilaTriagemResponseDTO dto = useCase.buscar(cpf);
@@ -70,18 +70,18 @@ class BuscarTriagemFilaPorCpfUseCaseTest {
         // Assert
         assertNotNull(dto);
         assertEquals("Paciente CPF", dto.nomePaciente());
-        verify(filaTriagemRepository).findByPacienteCpf(cpf);
+        verify(filaTriagemRepository).findByPacienteCpfAndStatusTriagem(cpf,StatusTriagemEnum.AGUARDANDO);
     }
 
     @Test
     void deveLancarExcecaoSePacienteNaoForEncontrado() {
         // Arrange
         String cpf = "99999999999";
-        when(filaTriagemRepository.findByPacienteCpf(cpf)).thenReturn(Optional.empty());
+        when(filaTriagemRepository.findByPacienteCpfAndStatusTriagem(cpf,StatusTriagemEnum.AGUARDANDO)).thenReturn(Optional.empty());
 
         // Assert
         assertThrows(EntidadeNaoEncontradaException.class, () -> useCase.buscar(cpf));
-        verify(filaTriagemRepository).findByPacienteCpf(cpf);
+        verify(filaTriagemRepository).findByPacienteCpfAndStatusTriagem(cpf,StatusTriagemEnum.AGUARDANDO);
     }
 
     private FilaTriagem criarFilaTriagem(Long id, String nome, String cpf) {

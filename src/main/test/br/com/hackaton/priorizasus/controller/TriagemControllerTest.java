@@ -5,6 +5,10 @@ import br.com.hackaton.priorizasus.casosdeuso.BuscarDezProximosFilaTriagemUseCas
 import br.com.hackaton.priorizasus.casosdeuso.BuscarPacienteFilaTriagemUseCase;
 import br.com.hackaton.priorizasus.casosdeuso.RealizarTriagemUseCase;
 import br.com.hackaton.priorizasus.dto.FilaTriagemResponseDTO;
+import br.com.hackaton.priorizasus.dto.RealizarTriagemRequestDTO;
+import br.com.hackaton.priorizasus.dto.TriagemResponseDTO;
+import br.com.hackaton.priorizasus.entities.Sintoma;
+import br.com.hackaton.priorizasus.enums.NivelPrioridadeEnum;
 import br.com.hackaton.priorizasus.enums.StatusTriagemEnum;
 import br.com.hackaton.priorizasus.exception.EntidadeNaoEncontradaException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,11 +20,14 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -134,6 +141,60 @@ class TriagemControllerTest {
                     .andExpect(content().string("Paciente não encontrado"));
         }
 
+    }
+
+    @Nested
+    class RealizarTriagemEndpointTests {
+
+        @Test
+        void deveRealizarTriagemComSucesso() throws Exception {
+            Set<Sintoma> sintomas = new HashSet<>();
+            sintomas.add(new Sintoma(1L, "Febre", 4));
+            sintomas.add(new Sintoma(2L, "Dor de cabeça", 3));
+
+            RealizarTriagemRequestDTO requestDTO = new RealizarTriagemRequestDTO(
+                    1L,
+                    10L,
+                    sintomas,
+                    false,
+                    null
+            );
+
+            TriagemResponseDTO responseDTO = new TriagemResponseDTO(100L, NivelPrioridadeEnum.AMARELO, LocalDateTime.now());
+            when(realizarTriagemUseCase.realizarTriagem(any(RealizarTriagemRequestDTO.class)))
+                    .thenReturn(responseDTO);
+
+            mockMvc.perform(post("/triagem/realizar")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(requestDTO)))
+                    .andExpect(status().isCreated())
+                    .andExpect(jsonPath("$.triagemId").value(100L))
+                    .andExpect(jsonPath("$.nivelPrioridadeEnum").value("AMARELO"))
+                    .andExpect(jsonPath("$.dataTriagem").exists());
+        }
+
+        @Test
+        void deveRetornar404QuandoUseCaseLancaExcecao() throws Exception {
+            Set<Sintoma> sintomas = new HashSet<>();
+            sintomas.add(new Sintoma(1L, "Dor", 2));
+
+            RealizarTriagemRequestDTO requestDTO = new RealizarTriagemRequestDTO(
+                    999L,
+                    10L,
+                    sintomas,
+                    false,
+                    null
+            );
+
+            when(realizarTriagemUseCase.realizarTriagem(any(RealizarTriagemRequestDTO.class)))
+                    .thenThrow(new EntidadeNaoEncontradaException("Paciente não encontrado"));
+
+            mockMvc.perform(post("/triagem/realizar")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(requestDTO)))
+                    .andExpect(status().isNotFound())
+                    .andExpect(content().string("Paciente não encontrado"));
+        }
     }
 
 
