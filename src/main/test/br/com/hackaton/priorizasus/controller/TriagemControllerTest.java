@@ -3,6 +3,7 @@ package br.com.hackaton.priorizasus.controller;
 import br.com.hackaton.priorizasus.casosdeuso.AlterarStatusFilaTriagemUseCase;
 import br.com.hackaton.priorizasus.casosdeuso.BuscarDezProximosFilaTriagemUseCase;
 import br.com.hackaton.priorizasus.casosdeuso.BuscarPacienteFilaTriagemUseCase;
+import br.com.hackaton.priorizasus.casosdeuso.RealizarTriagemUseCase;
 import br.com.hackaton.priorizasus.dto.FilaTriagemResponseDTO;
 import br.com.hackaton.priorizasus.enums.StatusTriagemEnum;
 import br.com.hackaton.priorizasus.exception.EntidadeNaoEncontradaException;
@@ -35,6 +36,8 @@ class TriagemControllerTest {
     private BuscarPacienteFilaTriagemUseCase buscarPacienteFilaPorCpfUseCase;
     @Mock
     private AlterarStatusFilaTriagemUseCase alterarStatusTriagemUseCase;
+    @Mock
+    private RealizarTriagemUseCase realizarTriagemUseCase;
 
     private TriagemController controller;
 
@@ -48,9 +51,10 @@ class TriagemControllerTest {
     void setUp() {
         openMocks = MockitoAnnotations.openMocks(this);
          controller = new TriagemController(
-                buscarProximosAguardando,
-                buscarPacienteFilaPorCpfUseCase,
-                alterarStatusTriagemUseCase);
+                 buscarProximosAguardando,
+                 buscarPacienteFilaPorCpfUseCase,
+                 alterarStatusTriagemUseCase,
+                 realizarTriagemUseCase);
         mockMvc = MockMvcBuilders.standaloneSetup(controller).setControllerAdvice(GlobalExceptionHandler.class).build();
     }
 

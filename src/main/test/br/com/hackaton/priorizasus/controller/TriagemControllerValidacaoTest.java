@@ -3,6 +3,7 @@ package br.com.hackaton.priorizasus.controller;
 import br.com.hackaton.priorizasus.casosdeuso.AlterarStatusFilaTriagemUseCase;
 import br.com.hackaton.priorizasus.casosdeuso.BuscarDezProximosFilaTriagemUseCase;
 import br.com.hackaton.priorizasus.casosdeuso.BuscarPacienteFilaTriagemUseCase;
+import br.com.hackaton.priorizasus.casosdeuso.RealizarTriagemUseCase;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -12,12 +13,11 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.hamcrest.Matchers.containsString;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -31,6 +31,8 @@ class TriagemControllerValidacaoTest {
     private BuscarPacienteFilaTriagemUseCase buscarPacienteFilaPorCpfUseCase;
     @Mock
     private AlterarStatusFilaTriagemUseCase alterarStatusTriagemUseCase;
+    @Mock
+    private RealizarTriagemUseCase realizarTriagemUseCase;
 
     private TriagemController controller;
 
@@ -44,9 +46,10 @@ class TriagemControllerValidacaoTest {
     void setUp() {
         openMocks = MockitoAnnotations.openMocks(this);
          controller = new TriagemController(
-                buscarProximosAguardando,
-                buscarPacienteFilaPorCpfUseCase,
-                alterarStatusTriagemUseCase);
+                 buscarProximosAguardando,
+                 buscarPacienteFilaPorCpfUseCase,
+                 alterarStatusTriagemUseCase,
+                 realizarTriagemUseCase);
         mockMvc = MockMvcBuilders.standaloneSetup(controller).setControllerAdvice(GlobalExceptionHandler.class).build();
     }
 

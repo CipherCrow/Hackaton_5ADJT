@@ -10,6 +10,7 @@ import java.util.Optional;
 
 @Repository
 public interface FilaTriagemRepository extends JpaRepository<FilaTriagem, Long> {
-    Optional<FilaTriagem> findByPacienteCpf(String cpf);
+    Optional<FilaTriagem> findByPacienteCpfAndStatusTriagem(String cpf, StatusTriagemEnum statusTriagem);
+    Optional<FilaTriagem> findByPacienteIdAndStatusTriagem(Long id, StatusTriagemEnum statusTriagem);
     List<FilaTriagem> findTop10ByStatusTriagemOrderByHorarioEntradaAsc(StatusTriagemEnum statusTriagem);
 }

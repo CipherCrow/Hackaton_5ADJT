@@ -49,16 +49,23 @@ public class Triagem {
                 .max()
                 .orElse(1);
 
-        if (maiorGravidade == 5) {
-            this.nivelPrioridadeEnum = NivelPrioridadeEnum.VERMELHO;
-        } else if (maiorGravidade == 4) {
-            this.nivelPrioridadeEnum = NivelPrioridadeEnum.LARANJA;
-        } else if (maiorGravidade == 3) {
-            this.nivelPrioridadeEnum = NivelPrioridadeEnum.AMARELO;
-        } else if (maiorGravidade == 2) {
-            this.nivelPrioridadeEnum = NivelPrioridadeEnum.VERDE;
-        } else {
-            this.nivelPrioridadeEnum = NivelPrioridadeEnum.AZUL;
+        switch (maiorGravidade) {
+            case (5):
+                this.nivelPrioridadeEnum = NivelPrioridadeEnum.VERMELHO;
+                break;
+            case (4):
+                this.nivelPrioridadeEnum = NivelPrioridadeEnum.LARANJA;
+                break;
+            case (3):
+                this.nivelPrioridadeEnum = NivelPrioridadeEnum.AMARELO;
+                break;
+            case (2):
+                this.nivelPrioridadeEnum = NivelPrioridadeEnum.VERDE;
+                break;
+            default:
+                this.nivelPrioridadeEnum = NivelPrioridadeEnum.AZUL;
+                break;
         }
+
     }
 }

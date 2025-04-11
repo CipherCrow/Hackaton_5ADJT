@@ -2,6 +2,7 @@ package br.com.hackaton.priorizasus.casosdeuso;
 
 import br.com.hackaton.priorizasus.dto.FilaTriagemResponseDTO;
 import br.com.hackaton.priorizasus.entities.FilaTriagem;
+import br.com.hackaton.priorizasus.enums.StatusTriagemEnum;
 import br.com.hackaton.priorizasus.mapper.FilaTriagemMapper;
 import br.com.hackaton.priorizasus.exception.EntidadeNaoEncontradaException;
 import br.com.hackaton.priorizasus.repository.FilaTriagemRepository;
@@ -20,11 +21,11 @@ public class BuscarPacienteFilaTriagemUseCase  {
         Optional<FilaTriagem> fila;
 
         if (termo.length() == 11 && termo.chars().allMatch(Character::isDigit)) {
-            fila = filaTriagemRepository.findByPacienteCpf(termo);
+            fila = filaTriagemRepository.findByPacienteCpfAndStatusTriagem(termo, StatusTriagemEnum.AGUARDANDO);
         } else {
             try {
                 Long id = Long.parseLong(termo);
-                fila = filaTriagemRepository.findById(id);
+                fila = filaTriagemRepository.findByPacienteIdAndStatusTriagem(id, StatusTriagemEnum.AGUARDANDO);
             } catch (NumberFormatException e) {
                 throw new IllegalArgumentException("Termo de busca inválido: deve ser CPF ou ID.");
             }
@@ -33,7 +34,6 @@ public class BuscarPacienteFilaTriagemUseCase  {
         return fila.map(FilaTriagemMapper::mapearParaReponseDTO)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Paciente na fila de triagem não encontrado."));
     }
-
 
 }
 
