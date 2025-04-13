@@ -1,6 +1,7 @@
 package br.com.hackaton.priorizasus.controller;
 
 import br.com.hackaton.priorizasus.exception.EntidadeNaoEncontradaException;
+import br.com.hackaton.priorizasus.exception.EnumInvalidoException;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,6 +36,18 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(EntidadeNaoEncontradaException.class)
     public ResponseEntity<String> handleEntidadeNaoEncontrada(EntidadeNaoEncontradaException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    // Caso seja inserido valores invalidos
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<String> handleIllegalArgumentExeception(IllegalArgumentException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    // para poder tratar sem mexer nos beans da aplicação
+    @ExceptionHandler(EnumInvalidoException.class)
+    public ResponseEntity<String> handleEnumInvalido(EnumInvalidoException ex) {
+        return ResponseEntity.badRequest().body(ex.getMessage());
     }
 
 }

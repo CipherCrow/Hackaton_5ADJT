@@ -4,14 +4,19 @@ import br.com.hackaton.priorizasus.enums.StatusAtendimentoEnum;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class FilaAtendimento {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,6 +34,8 @@ public class FilaAtendimento {
     @Enumerated(EnumType.STRING)
     @NotNull
     private StatusAtendimentoEnum statusAtendimentoEnum;
+
+    private LocalTime tempoEsperaEstimado;
 
     private int pesoFila;
 
