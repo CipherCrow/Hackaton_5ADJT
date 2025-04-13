@@ -3,7 +3,9 @@ package br.com.hackaton.priorizasus.controller;
 import br.com.hackaton.priorizasus.casosdeuso.AtualizarStatusAtendimentoUseCase;
 import br.com.hackaton.priorizasus.casosdeuso.BuscarFilaAtendimentoPorIdOuCpfUseCase;
 import br.com.hackaton.priorizasus.casosdeuso.BuscarProximosAtendimentosUseCase;
+import br.com.hackaton.priorizasus.casosdeuso.FinalizarAtendimentoUseCase;
 import br.com.hackaton.priorizasus.dto.FilaAtendimentoDTO;
+import br.com.hackaton.priorizasus.dto.FinalizarAtendimentoDTO;
 import br.com.hackaton.priorizasus.enums.NivelPrioridadeEnum;
 import br.com.hackaton.priorizasus.enums.StatusAtendimentoEnum;
 import br.com.hackaton.priorizasus.exception.EntidadeNaoEncontradaException;
@@ -16,6 +18,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -23,9 +26,9 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 class AtendimentoControllerTest {
@@ -41,6 +44,9 @@ class AtendimentoControllerTest {
     @Mock
     private AtualizarStatusAtendimentoUseCase atualizarStatusUseCase;
 
+    @Mock
+    private FinalizarAtendimentoUseCase finalizarAtendimentoUseCase;
+
     private AutoCloseable openMocks;
 
     private AtendimentoController controller;
@@ -53,7 +59,7 @@ class AtendimentoControllerTest {
     void setUp() {
         openMocks = MockitoAnnotations.openMocks(this);
         controller = new AtendimentoController(
-                buscarProximosUseCase   , buscarPorIdOuCpfUseCase, atualizarStatusUseCase
+                buscarProximosUseCase   , buscarPorIdOuCpfUseCase, atualizarStatusUseCase, finalizarAtendimentoUseCase
                 );
         mockMvc = MockMvcBuilders.standaloneSetup(controller).setControllerAdvice(GlobalExceptionHandler.class).build();
     }
@@ -139,6 +145,65 @@ class AtendimentoControllerTest {
                             .param("novoStatus", "INVALIDO"))
                     .andExpect(status().isBadRequest())
                     .andExpect(content().string("Valor inválido para o parâmetro: INVALIDO"));
+        }
+    }
+
+    @Nested
+    class finalizarAtendimento{
+        @Test
+        void deveRetornar200QuandoFinalizadoComSucesso() throws Exception {
+            FinalizarAtendimentoDTO dto = new FinalizarAtendimentoDTO(
+                    1L,
+                    2L,
+                    "Diagnóstico exemplo",
+                    "Prescrição exemplo"
+            );
+
+            mockMvc.perform(put("/filaAtendimento/finalizar")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(dto)))
+                    .andExpect(status().isOk())
+                    .andExpect(content().string("Atendimento Finalizado!"));
+
+            verify(finalizarAtendimentoUseCase).executar(dto);
+        }
+
+        @Test
+        void deveRetornar404QuandoAtendimentoNaoForEncontrado() throws Exception {
+            FinalizarAtendimentoDTO dto = new FinalizarAtendimentoDTO(
+                    99L,
+                    2L,
+                    "Diagnóstico",
+                    "Prescrição"
+            );
+
+            doThrow(new EntidadeNaoEncontradaException("Atendimento não encontrado"))
+                    .when(finalizarAtendimentoUseCase).executar(dto);
+
+            mockMvc.perform(put("/filaAtendimento/finalizar")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(dto)))
+                    .andExpect(status().isNotFound())
+                    .andExpect(content().string("Atendimento não encontrado"));
+        }
+
+        @Test
+        void deveRetornar400QuandoStatusDoAtendimentoNaoPermiteFinalizacao() throws Exception {
+            FinalizarAtendimentoDTO dto = new FinalizarAtendimentoDTO(
+                    1L,
+                    2L,
+                    "Diagnóstico",
+                    "Prescrição"
+            );
+
+            doThrow(new IllegalArgumentException("Apenas atendimentos pendentes podem ser finalizados"))
+                    .when(finalizarAtendimentoUseCase).executar(dto);
+
+            mockMvc.perform(put("/filaAtendimento/finalizar")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(dto)))
+                    .andExpect(status().isBadRequest())
+                    .andExpect(content().string("Apenas atendimentos pendentes podem ser finalizados"));
         }
     }
 }

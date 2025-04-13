@@ -9,6 +9,7 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class ProfissionalSaude {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
