@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +23,7 @@ public class RealizarTriagemUseCase {
     private final TriagemRepository triagemRepository;
     private final FilaAtendimentoRepository filaAtendimentoRepository;
     private final FilaTriagemRepository filaTriagemRepository;
+    private final CalcularTempoEstimadoUseCase calcularTempoEstimadoUseCase;
 
     @Transactional
     public TriagemResponseDTO realizarTriagem(RealizarTriagemRequestDTO dto) {
@@ -54,6 +56,9 @@ public class RealizarTriagemUseCase {
         filaAtendimento.setStatusAtendimentoEnum(StatusAtendimentoEnum.PENDENTE);
         // O método atualizarPesoFila fará o cálculo usando o tempo de espera e a prioridade
         filaAtendimento.atualizarPesoFila();
+
+        LocalTime tempoEstimado = calcularTempoEstimadoUseCase.calcularTempoEstimado(filaAtendimento);
+        filaAtendimento.setTempoEsperaEstimado(tempoEstimado);
         filaAtendimentoRepository.save(filaAtendimento);
 
         // Atualiza o registro na FilaTriagem para TRIAGEM_REALIZADA

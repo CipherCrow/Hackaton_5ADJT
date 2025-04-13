@@ -4,7 +4,6 @@ import br.com.hackaton.priorizasus.entities.Sintoma;
 import br.com.hackaton.priorizasus.enums.NivelPrioridadeEnum;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import lombok.RequiredArgsConstructor;
 
 import java.util.Set;
 

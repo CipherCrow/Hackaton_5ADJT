@@ -35,6 +35,8 @@ class RealizarTriagemUseCaseTest {
     private FilaAtendimentoRepository filaAtendimentoRepository;
     @Mock
     private FilaTriagemRepository filaTriagemRepository;
+    @Mock
+    private CalcularTempoEstimadoUseCase calcularTempoEstimadoUseCase;
 
     private RealizarTriagemUseCase realizarTriagemUseCase;
 
@@ -54,7 +56,8 @@ class RealizarTriagemUseCaseTest {
                 profissionalRepository,
                 triagemRepository,
                 filaAtendimentoRepository,
-                filaTriagemRepository
+                filaTriagemRepository,
+                calcularTempoEstimadoUseCase
         );
 
         paciente = new Paciente();
