@@ -19,11 +19,11 @@ public class Usuario {
 
     @NotBlank
     @Size(min = 5, max = 50)
-    private String username;
+    private String login;
 
     @NotBlank
     @Size(min = 8)
-    private String password;
+    private String senha;
 
     @Enumerated(EnumType.STRING)
     @NotNull
