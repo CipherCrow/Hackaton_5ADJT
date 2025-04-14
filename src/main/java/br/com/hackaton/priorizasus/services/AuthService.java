@@ -6,6 +6,7 @@ import br.com.hackaton.priorizasus.exception.EntidadeNaoEncontradaException;
 import br.com.hackaton.priorizasus.infrastructure.security.JwtUtil;
 import br.com.hackaton.priorizasus.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,12 +15,14 @@ public class AuthService {
 
     private final UsuarioRepository usuarioRepository;
     private final JwtUtil jwtUtil;
+    private final PasswordEncoder passwordEncoder;
+
 
     public String autenticar(LoginRequestDTO dto) {
         Usuario usuario = usuarioRepository.findByLogin(dto.usuario())
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Usuário ou senha inválidos"));
 
-        if (!usuario.getSenha().equals(dto.senha())) {
+        if (!passwordEncoder.matches(dto.senha(), usuario.getSenha())) {
             throw new IllegalArgumentException("Usuário ou senha inválidos");
         }
 
