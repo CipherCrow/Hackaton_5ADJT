@@ -50,4 +50,12 @@ public class JwtUtil {
             throw new TokenInvalidoException("Token JWT inválido ou ausente.");
         }
     }
+    public String getUsernameFromToken(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(Keys.hmacShaKeyFor(secret.getBytes()))
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
+    }
 }
