@@ -51,6 +51,8 @@ class AdministrativoControllerTest {
     private BuscarProfissionalPorIdUseCase buscarProfissionalPorIdUseCase;
     @Mock
     private AtualizarProfissionalUseCase atualizarProfissionalUseCase;
+    @Mock
+    private CriarUsuarioPacienteUseCase criarUsuarioPacienteUseCase;
 
     private AutoCloseable openMocks;
 
@@ -72,7 +74,8 @@ class AdministrativoControllerTest {
                 cadastrarProfissional,
                 buscarTodosProfissionaisUseCase,
                 buscarProfissionalPorIdUseCase,
-                atualizarProfissionalUseCase
+                atualizarProfissionalUseCase,
+                criarUsuarioPacienteUseCase
                 );
         mockMvc = MockMvcBuilders.standaloneSetup(administrativoController).setControllerAdvice(GlobalExceptionHandler.class).build();
     }
@@ -384,5 +387,22 @@ class AdministrativoControllerTest {
             verify(atualizarProfissionalUseCase).atualizar(eq(1L), any(ProfissionalSaudeRequestDTO.class));
         }
 
+    }
+
+
+    @Nested
+    class CriarUsuarioPaciente {
+        @Test
+        void deveCriarUsuarioParaPacienteComDadosValidos() throws Exception {
+            CriarUsuarioPacienteDTO dto = new CriarUsuarioPacienteDTO("joao", "senha123","12345678");
+
+            mockMvc.perform(post("/administrativo/usuarios/criarUsuario")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(dto)))
+                    .andExpect(status().isCreated())
+                            .andExpect(content().string("Usuario criado para o paciente com sucesso!"));
+
+            verify(criarUsuarioPacienteUseCase).executar(dto);
+        }
     }
 }

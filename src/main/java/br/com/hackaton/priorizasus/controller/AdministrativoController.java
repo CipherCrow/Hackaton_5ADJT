@@ -33,6 +33,9 @@ public class AdministrativoController {
     private final BuscarProfissionalPorIdUseCase buscarProfissionalPorIdUseCase;
     private final AtualizarProfissionalUseCase atualizarProfissionalUseCase;
 
+    //Usuarios
+    private final CriarUsuarioPacienteUseCase criarUsuarioPacienteUseCase;
+
     // Paciente
     @PostMapping("/cadastrarPaciente")
     public ResponseEntity<PacienteCadastradoDTO> cadastrarPaciente(@RequestBody @Valid PacienteParaCadastrarDTO dto) {
@@ -106,5 +109,12 @@ public class AdministrativoController {
             @RequestBody @Valid ProfissionalSaudeRequestDTO dto) {
         atualizarProfissionalUseCase.atualizar(id, dto);
         return ResponseEntity.ok("Profissional atualizado com sucesso!");
+    }
+
+    //Usuarios
+    @PostMapping("/usuarios/criarUsuario")
+    public ResponseEntity<String> criarUsuarioParaPaciente(@RequestBody @Valid CriarUsuarioPacienteDTO dto) {
+        criarUsuarioPacienteUseCase.executar(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Usuario criado para o paciente com sucesso!");
     }
 }

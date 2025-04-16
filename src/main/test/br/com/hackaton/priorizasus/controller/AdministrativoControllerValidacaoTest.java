@@ -1,6 +1,7 @@
 package br.com.hackaton.priorizasus.controller;
 
 import br.com.hackaton.priorizasus.casosdeuso.*;
+import br.com.hackaton.priorizasus.dto.CriarUsuarioPacienteDTO;
 import br.com.hackaton.priorizasus.dto.PacienteParaCadastrarDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -17,11 +18,10 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.time.LocalDateTime;
 
-import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 class AdministrativoControllerValidacaoTest {
 
@@ -48,6 +48,8 @@ class AdministrativoControllerValidacaoTest {
     private BuscarProfissionalPorIdUseCase buscarProfissionalPorIdUseCase;
     @Mock
     private AtualizarProfissionalUseCase atualizarProfissionalUseCase;
+    @Mock
+    private CriarUsuarioPacienteUseCase criarUsuarioPacienteUseCase;
 
     private AutoCloseable openMocks;
 
@@ -69,7 +71,8 @@ class AdministrativoControllerValidacaoTest {
                 cadastrarProfissional,
                 buscarTodosProfissionaisUseCase,
                 buscarProfissionalPorIdUseCase,
-                atualizarProfissionalUseCase
+                atualizarProfissionalUseCase,
+                criarUsuarioPacienteUseCase
         );
         mockMvc = MockMvcBuilders.standaloneSetup(administrativoController).setControllerAdvice(GlobalExceptionHandler.class).build();
     }
@@ -310,6 +313,22 @@ class AdministrativoControllerValidacaoTest {
                     .andExpect(content().string(containsString("Nome deve ter entre 2 e 100 caracteres")))
                     .andExpect(content().string(containsString("CRM é obrigatório")))
                     .andExpect(content().string(containsString("Especialidade é obrigatória")));
+        }
+    }
+
+    @Nested
+    class ValidacaoCriarUsuario{
+        @Test
+        void deveRetornar400QuandoDadosSaoInvalidos() throws Exception {
+            CriarUsuarioPacienteDTO dto = new CriarUsuarioPacienteDTO("", "", "");
+
+            mockMvc.perform(post("/administrativo/usuarios/criarUsuario")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(dto)))
+                    .andExpect(status().isBadRequest())
+                    .andExpect(content().string(containsString("Cpf é obrigatório!")))
+                    .andExpect(content().string(containsString("Login é obrigatório!")))
+                    .andExpect(content().string(containsString("Senha é obrigatória!")));
         }
     }
 }

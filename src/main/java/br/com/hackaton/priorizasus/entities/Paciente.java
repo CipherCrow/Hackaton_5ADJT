@@ -34,6 +34,6 @@ public class Paciente {
     private String telefone;
     private String endereco;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Usuario usuario;
 }
