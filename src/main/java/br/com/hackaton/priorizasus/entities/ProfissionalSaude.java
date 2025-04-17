@@ -19,7 +19,6 @@ public class ProfissionalSaude {
     @Size(min = 2, max = 100)
     private String nome;
 
-    @NotBlank
     private String crm;
 
     @NotBlank

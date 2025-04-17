@@ -260,23 +260,6 @@ class AdministrativoControllerValidacaoTest {
         }
 
         @Test
-        void deveRetornar400QuandoCrmEhVazio() throws Exception {
-            String json = """
-                    {
-                      "nome": "Dra. Valéria",
-                      "crm": "",
-                      "especialidade": "Psicologia"
-                    }
-                    """;
-
-            mockMvc.perform(post("/administrativo/cadastrarProfissional")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(json))
-                    .andExpect(status().isBadRequest())
-                    .andExpect(content().string(containsString("crm")));
-        }
-
-        @Test
         void deveRetornar400QuandoEspecialidadeEhVazia() throws Exception {
             String json = """
                     {
@@ -311,7 +294,6 @@ class AdministrativoControllerValidacaoTest {
                             .content(json))
                     .andExpect(status().isBadRequest())
                     .andExpect(content().string(containsString("Nome deve ter entre 2 e 100 caracteres")))
-                    .andExpect(content().string(containsString("CRM é obrigatório")))
                     .andExpect(content().string(containsString("Especialidade é obrigatória")));
         }
     }

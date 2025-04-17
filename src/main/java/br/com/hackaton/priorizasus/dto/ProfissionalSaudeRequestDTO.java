@@ -8,7 +8,6 @@ public record ProfissionalSaudeRequestDTO(
         @Size(min = 2, max = 100, message = "Nome deve ter entre 2 e 100 caracteres")
         String nome,
 
-        @NotBlank(message = "CRM é obrigatório")
         String crm,
 
         @NotBlank(message = "Especialidade é obrigatória")

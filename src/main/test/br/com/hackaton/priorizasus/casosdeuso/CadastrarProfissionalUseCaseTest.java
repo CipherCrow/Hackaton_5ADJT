@@ -1,19 +1,13 @@
 package br.com.hackaton.priorizasus.casosdeuso;
 
-import br.com.hackaton.priorizasus.dto.PacienteCadastradoDTO;
-import br.com.hackaton.priorizasus.dto.PacienteParaCadastrarDTO;
 import br.com.hackaton.priorizasus.dto.ProfissionalSaudeDTO;
 import br.com.hackaton.priorizasus.dto.ProfissionalSaudeRequestDTO;
-import br.com.hackaton.priorizasus.entities.Paciente;
 import br.com.hackaton.priorizasus.entities.ProfissionalSaude;
 import br.com.hackaton.priorizasus.mapper.ProfissionalSaudeMapper;
-import br.com.hackaton.priorizasus.repository.PacienteRepository;
 import br.com.hackaton.priorizasus.repository.ProfissionalSaudeRepository;
 import org.junit.jupiter.api.*;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
-import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;

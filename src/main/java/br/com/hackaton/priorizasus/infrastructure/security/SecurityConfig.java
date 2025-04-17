@@ -22,6 +22,10 @@ public class SecurityConfig {
         return http
                 .csrf(csrf -> csrf.disable()) // importante para travar ataques de csrf
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Sem sessão
+
+                //  APENAS PARA TESTE PARA DEIXAR VER O H2
+                .headers(headers -> headers.frameOptions( frameOptions -> frameOptions.disable() ))
+
                 .authorizeHttpRequests(auth -> auth
                         // Libera o login
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
@@ -31,6 +35,9 @@ public class SecurityConfig {
 
                         // TODO: libere os endpoints públicos aqui
                         .requestMatchers("/publico/**").permitAll()
+
+                        // libera o H2 Console APENAS PARA TESTEEE!!!!
+                        .requestMatchers("/h2-console/**").permitAll()
 
                         // Tudo o resto precisa de autenticação
                         .anyRequest().authenticated()
