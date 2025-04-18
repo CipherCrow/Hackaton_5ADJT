@@ -27,20 +27,20 @@ public class SecurityConfig {
                 .headers(headers -> headers.frameOptions( frameOptions -> frameOptions.disable() ))
 
                 .authorizeHttpRequests(auth -> auth
-                        // Libera o login
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-
-                        // Libera acesso público ao Swagger se quiser
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
-
-                        // TODO: libere os endpoints públicos aqui
                         .requestMatchers("/publico/**").permitAll()
-
-                        // libera o H2 Console APENAS PARA TESTEEE!!!!
                         .requestMatchers("/h2-console/**").permitAll()
 
-                        // Tudo o resto precisa de autenticação
-                        .anyRequest().authenticated()
+                        // PACIENTE pode acessar apenas /paciente/**
+                        .requestMatchers("/paciente/**").hasRole("PACIENTE")
+
+                        // FUNCIONARIO pode acessar tudo EXCETO /paciente/**
+                        .requestMatchers("/funcionario/**").hasAnyRole("FUNCIONARIO", "ADMINISTRADOR")
+                        .requestMatchers("/admin/**").hasRole("ADMINISTRADOR")
+
+                        // Os administradores acessam tudo
+                        .anyRequest().hasRole("ADMINISTRADOR")
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
