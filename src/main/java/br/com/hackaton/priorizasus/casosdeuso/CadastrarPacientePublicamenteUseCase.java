@@ -7,6 +7,7 @@ import br.com.hackaton.priorizasus.enums.PermissaoEnum;
 import br.com.hackaton.priorizasus.exception.EntidadeJaExisteException;
 import br.com.hackaton.priorizasus.repository.PacienteRepository;
 import br.com.hackaton.priorizasus.repository.UsuarioRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ public class CadastrarPacientePublicamenteUseCase {
     private final PacienteRepository pacienteRepository;
     private final PasswordEncoder passwordEncoder;
 
+    @Transactional
     public void executar(PacienteCadastroPublicoDTO dto) {
         // Validação de duplicidade
 
