@@ -293,7 +293,7 @@ class AdministrativoControllerValidacaoTest {
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(json))
                     .andExpect(status().isBadRequest())
-                    .andExpect(content().string(containsString("Nome deve ter entre 2 e 100 caracteres")))
+                    .andExpect(content().string(containsString("Nome é obrigatório")))
                     .andExpect(content().string(containsString("Especialidade é obrigatória")));
         }
     }

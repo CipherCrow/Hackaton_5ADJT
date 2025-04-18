@@ -45,7 +45,7 @@ class BuscarTriagemFilaPorCpfUseCaseTest {
         Long id = 1L;
         FilaTriagem fila = criarFilaTriagem(id, "Paciente 1", "12345678900");
 
-        when(filaTriagemRepository.findById(id)).thenReturn(Optional.of(fila));
+        when(filaTriagemRepository.findByPacienteIdAndStatusTriagem(id, StatusTriagemEnum.AGUARDANDO)).thenReturn(Optional.of(fila));
 
         // Act
         FilaTriagemResponseDTO dto = useCase.buscar(id.toString());
@@ -53,7 +53,7 @@ class BuscarTriagemFilaPorCpfUseCaseTest {
         // Assert
         assertNotNull(dto);
         assertEquals("Paciente 1", dto.nomePaciente());
-        verify(filaTriagemRepository).findById(id);
+        verify(filaTriagemRepository).findByPacienteIdAndStatusTriagem(id, StatusTriagemEnum.AGUARDANDO);
     }
 
     @Test
