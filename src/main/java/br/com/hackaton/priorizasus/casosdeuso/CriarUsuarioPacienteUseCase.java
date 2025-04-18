@@ -1,14 +1,10 @@
 package br.com.hackaton.priorizasus.casosdeuso;
 
 import br.com.hackaton.priorizasus.dto.CriarUsuarioPacienteDTO;
-import br.com.hackaton.priorizasus.dto.FilaAtendimentoDTO;
-import br.com.hackaton.priorizasus.entities.FilaAtendimento;
 import br.com.hackaton.priorizasus.entities.Paciente;
 import br.com.hackaton.priorizasus.entities.Usuario;
 import br.com.hackaton.priorizasus.enums.PermissaoEnum;
 import br.com.hackaton.priorizasus.exception.EntidadeNaoEncontradaException;
-import br.com.hackaton.priorizasus.mapper.AtendimentoMapper;
-import br.com.hackaton.priorizasus.repository.FilaAtendimentoRepository;
 import br.com.hackaton.priorizasus.repository.PacienteRepository;
 import br.com.hackaton.priorizasus.repository.UsuarioRepository;
 import jakarta.transaction.Transactional;

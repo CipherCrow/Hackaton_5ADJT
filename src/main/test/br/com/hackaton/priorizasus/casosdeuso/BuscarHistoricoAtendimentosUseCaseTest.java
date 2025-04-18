@@ -5,7 +5,6 @@ import br.com.hackaton.priorizasus.entities.*;
 import br.com.hackaton.priorizasus.enums.NivelPrioridadeEnum;
 import br.com.hackaton.priorizasus.enums.PermissaoEnum;
 import br.com.hackaton.priorizasus.exception.EntidadeNaoEncontradaException;
-import br.com.hackaton.priorizasus.mapper.HistoricoAtendimentoMapper;
 import br.com.hackaton.priorizasus.repository.AtendimentoHistoricoRepository;
 import br.com.hackaton.priorizasus.repository.PacienteRepository;
 import org.junit.jupiter.api.AfterEach;

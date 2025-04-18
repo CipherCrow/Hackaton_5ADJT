@@ -16,7 +16,7 @@ import static org.mockito.Mockito.when;
 class CadastrarProfissionalUseCaseTest {
 
     @Mock
-    private ProfissionalSaudeRepository repository;;
+    private ProfissionalSaudeRepository repository;
 
     private CadastrarProfissionalUseCase cadastrarProfissionalUseCase;
 

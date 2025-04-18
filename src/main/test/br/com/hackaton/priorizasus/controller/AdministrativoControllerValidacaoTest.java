@@ -18,10 +18,11 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.time.LocalDateTime;
 
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class AdministrativoControllerValidacaoTest {
 
@@ -293,7 +294,7 @@ class AdministrativoControllerValidacaoTest {
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(json))
                     .andExpect(status().isBadRequest())
-                    .andExpect(content().string(containsString("Nome é obrigatório")))
+                    .andExpect(content().string(containsString("Nome deve ter entre 2 e 100 caracteres")))
                     .andExpect(content().string(containsString("Especialidade é obrigatória")));
         }
     }
