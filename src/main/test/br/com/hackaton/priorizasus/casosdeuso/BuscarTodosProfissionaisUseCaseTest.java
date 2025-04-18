@@ -15,7 +15,7 @@ import static org.mockito.Mockito.when;
 class BuscarTodosProfissionaisUseCaseTest {
 
     @Mock
-    private ProfissionalSaudeRepository repository;;
+    private ProfissionalSaudeRepository repository;
 
     private BuscarTodosProfissionaisUseCase buscarTodosProfissionaisUseCase;
 
@@ -38,7 +38,7 @@ class BuscarTodosProfissionaisUseCaseTest {
 
         @Test
         @DisplayName("Deve Buscar todos os profissionais com sucesso!")
-        void deveBuscarProfissionaisComSucesso() throws Exception {
+        void deveBuscarProfissionaisComSucesso() {
             List<ProfissionalSaude> lista = List.of(
                     new ProfissionalSaude(1L, "Dr. João", "123", "Clínico Geral", null),
                     new ProfissionalSaude(2L, "Dra. Carla", "456", "Pediatria", null)

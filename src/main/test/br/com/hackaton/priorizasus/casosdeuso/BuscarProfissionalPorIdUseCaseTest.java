@@ -17,7 +17,7 @@ import static org.mockito.Mockito.when;
 class BuscarProfissionalPorIdUseCaseTest {
 
     @Mock
-    private ProfissionalSaudeRepository repository;;
+    private ProfissionalSaudeRepository repository;
 
     private BuscarProfissionalPorIdUseCase buscarProfissionalPorIdUseCase;
 
@@ -40,7 +40,7 @@ class BuscarProfissionalPorIdUseCaseTest {
 
         @Test
         @DisplayName("Deve Buscar o profissional com sucesso!")
-        void deveBuscarProfissionaisComSucesso() throws Exception {
+        void deveBuscarProfissionaisComSucesso() {
             ProfissionalSaude profissional = new ProfissionalSaude(1L, "Dr. Pedro", "555", "Neurologia", null);
             when(repository.findById(1L)).thenReturn(Optional.of(profissional));
 

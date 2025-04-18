@@ -1,7 +1,9 @@
 package br.com.hackaton.priorizasus.controller;
 
+import br.com.hackaton.priorizasus.exception.EntidadeJaExisteException;
 import br.com.hackaton.priorizasus.exception.EntidadeNaoEncontradaException;
 import br.com.hackaton.priorizasus.exception.EnumInvalidoException;
+import br.com.hackaton.priorizasus.exception.TokenInvalidoException;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,6 +50,18 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(EnumInvalidoException.class)
     public ResponseEntity<String> handleEnumInvalido(EnumInvalidoException ex) {
         return ResponseEntity.badRequest().body(ex.getMessage());
+    }
+
+    // Caso tente criar usuário para quem já tem
+    @ExceptionHandler(EntidadeJaExisteException.class)
+    public ResponseEntity<String> handleEntidadeJaExiste(EntidadeJaExisteException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+    }
+
+    // para poder tratar nos casos de login
+    @ExceptionHandler(TokenInvalidoException.class)
+    public ResponseEntity<String> handleTokenInvalido(TokenInvalidoException ex) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
     }
 
 }

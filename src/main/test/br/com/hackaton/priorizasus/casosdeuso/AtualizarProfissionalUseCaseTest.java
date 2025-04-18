@@ -18,7 +18,7 @@ import static org.mockito.Mockito.when;
 class AtualizarProfissionalUseCaseTest {
 
     @Mock
-    private ProfissionalSaudeRepository repository;;
+    private ProfissionalSaudeRepository repository;
 
     private AtualizarProfissionalUseCase atualizarProfissionalUseCase;
 

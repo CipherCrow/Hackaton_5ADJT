@@ -4,9 +4,6 @@ import br.com.hackaton.priorizasus.casosdeuso.AlterarStatusFilaTriagemUseCase;
 import br.com.hackaton.priorizasus.casosdeuso.BuscarDezProximosFilaTriagemUseCase;
 import br.com.hackaton.priorizasus.casosdeuso.BuscarPacienteFilaTriagemUseCase;
 import br.com.hackaton.priorizasus.casosdeuso.RealizarTriagemUseCase;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -39,10 +36,6 @@ class TriagemControllerValidacaoTest {
     private TriagemController controller;
 
     private AutoCloseable openMocks;
-
-    private final ObjectMapper objectMapper = new ObjectMapper()
-            .registerModule(new JavaTimeModule())
-            .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
     @BeforeEach
     void setUp() {

@@ -5,7 +5,6 @@ import br.com.hackaton.priorizasus.dto.PacienteParaCadastrarDTO;
 import br.com.hackaton.priorizasus.entities.Paciente;
 import br.com.hackaton.priorizasus.repository.PacienteRepository;
 import org.junit.jupiter.api.*;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 

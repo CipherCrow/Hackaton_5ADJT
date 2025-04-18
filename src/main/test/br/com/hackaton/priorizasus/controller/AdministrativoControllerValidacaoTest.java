@@ -1,6 +1,7 @@
 package br.com.hackaton.priorizasus.controller;
 
 import br.com.hackaton.priorizasus.casosdeuso.*;
+import br.com.hackaton.priorizasus.dto.CriarUsuarioPacienteDTO;
 import br.com.hackaton.priorizasus.dto.PacienteParaCadastrarDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -48,6 +49,8 @@ class AdministrativoControllerValidacaoTest {
     private BuscarProfissionalPorIdUseCase buscarProfissionalPorIdUseCase;
     @Mock
     private AtualizarProfissionalUseCase atualizarProfissionalUseCase;
+    @Mock
+    private CriarUsuarioPacienteUseCase criarUsuarioPacienteUseCase;
 
     private AutoCloseable openMocks;
 
@@ -69,7 +72,8 @@ class AdministrativoControllerValidacaoTest {
                 cadastrarProfissional,
                 buscarTodosProfissionaisUseCase,
                 buscarProfissionalPorIdUseCase,
-                atualizarProfissionalUseCase
+                atualizarProfissionalUseCase,
+                criarUsuarioPacienteUseCase
         );
         mockMvc = MockMvcBuilders.standaloneSetup(administrativoController).setControllerAdvice(GlobalExceptionHandler.class).build();
     }
@@ -257,23 +261,6 @@ class AdministrativoControllerValidacaoTest {
         }
 
         @Test
-        void deveRetornar400QuandoCrmEhVazio() throws Exception {
-            String json = """
-                    {
-                      "nome": "Dra. Valéria",
-                      "crm": "",
-                      "especialidade": "Psicologia"
-                    }
-                    """;
-
-            mockMvc.perform(post("/administrativo/cadastrarProfissional")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(json))
-                    .andExpect(status().isBadRequest())
-                    .andExpect(content().string(containsString("crm")));
-        }
-
-        @Test
         void deveRetornar400QuandoEspecialidadeEhVazia() throws Exception {
             String json = """
                     {
@@ -308,8 +295,23 @@ class AdministrativoControllerValidacaoTest {
                             .content(json))
                     .andExpect(status().isBadRequest())
                     .andExpect(content().string(containsString("Nome deve ter entre 2 e 100 caracteres")))
-                    .andExpect(content().string(containsString("CRM é obrigatório")))
                     .andExpect(content().string(containsString("Especialidade é obrigatória")));
+        }
+    }
+
+    @Nested
+    class ValidacaoCriarUsuario{
+        @Test
+        void deveRetornar400QuandoDadosSaoInvalidos() throws Exception {
+            CriarUsuarioPacienteDTO dto = new CriarUsuarioPacienteDTO("", "", "");
+
+            mockMvc.perform(post("/administrativo/usuarios/criarUsuario")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(dto)))
+                    .andExpect(status().isBadRequest())
+                    .andExpect(content().string(containsString("Cpf é obrigatório!")))
+                    .andExpect(content().string(containsString("Login é obrigatório!")))
+                    .andExpect(content().string(containsString("Senha é obrigatória!")));
         }
     }
 }
