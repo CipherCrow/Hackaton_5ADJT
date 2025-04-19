@@ -21,8 +21,10 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -141,6 +143,30 @@ class TriagemControllerTest {
                     .andExpect(content().string("Paciente não encontrado"));
         }
 
+    }
+
+    @Nested
+    class IniciarTriagem {
+
+        @Test
+        void deveConseguirIniciarTriagem() throws Exception {
+            mockMvc.perform(put(
+                            "/triagem/filaTriagem/iniciarTriagem/1"))
+                    .andExpect(status().isOk())
+                    .andExpect(content().string("Triagem iniciada com sucesso."));
+
+            verify(alterarStatusTriagemUseCase).alterarStatus(1L, StatusTriagemEnum.EM_ANDAMENTO);
+        }
+
+        @Test
+        void deveRetornar404QuandoIdNaoExistir() throws Exception {
+            doThrow(new EntidadeNaoEncontradaException("Paciente não encontrado"))
+                    .when(alterarStatusTriagemUseCase).alterarStatus(99L, StatusTriagemEnum.EM_ANDAMENTO);
+
+            mockMvc.perform(put("/triagem/filaTriagem/iniciarTriagem/99"))
+                    .andExpect(status().isNotFound())
+                    .andExpect(content().string("Paciente não encontrado"));
+        }
     }
 
     @Nested

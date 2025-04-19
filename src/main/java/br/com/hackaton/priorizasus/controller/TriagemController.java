@@ -49,6 +49,22 @@ public class TriagemController {
         return ResponseEntity.ok("Status atualizado com sucesso.");
     }
 
+    @Operation(
+            summary = "Inicia uma Triagem",
+            description = "Altera o Status da fila de triagem para em andamento."
+    )
+    @PutMapping("/filaTriagem/iniciarTriagem/{id}")
+    public ResponseEntity<String> alterarStatus(
+            @PathVariable Long id) {
+        alterarStatusTriagemUseCase.alterarStatus(id, StatusTriagemEnum.EM_ANDAMENTO);
+        return ResponseEntity.ok("Triagem iniciada com sucesso.");
+    }
+
+
+    @Operation(
+            summary = "Altera Status da fila de triagem",
+            description = "Altera o Status da fila de triagem."
+    )
     @PostMapping("/realizar")
     public ResponseEntity<TriagemResponseDTO> realizarTriagem(@RequestBody @Valid RealizarTriagemRequestDTO dto) {
         TriagemResponseDTO response = realizarTriagemUseCase.realizarTriagem(dto);
