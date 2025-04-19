@@ -3,16 +3,20 @@ package br.com.hackaton.priorizasus.casosdeuso;
 import br.com.hackaton.priorizasus.dto.PacienteCadastradoDTO;
 import br.com.hackaton.priorizasus.dto.PacienteParaCadastrarDTO;
 import br.com.hackaton.priorizasus.entities.Paciente;
+import br.com.hackaton.priorizasus.entities.Usuario;
+import br.com.hackaton.priorizasus.exception.EntidadeJaExisteException;
 import br.com.hackaton.priorizasus.repository.PacienteRepository;
 import org.junit.jupiter.api.*;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class CadastrarPacienteUseCaseTest {
 
@@ -65,6 +69,28 @@ class CadastrarPacienteUseCaseTest {
             assertEquals(1L, resultado.pacienteId());
             assertEquals("João Silva", resultado.nomePaciente());
             assertEquals("12345678900", resultado.cpfPaciente());
+        }
+
+        @Test
+        @DisplayName("Deve validar que já existe paciente com o cpf!")
+        void deveImpedirCadastrarPacienteQueJaExistaNoSistema(){
+
+            PacienteParaCadastrarDTO dto = new PacienteParaCadastrarDTO(
+                    "João Silva",
+                    "12345678900",
+                    LocalDateTime.of(1990, 5, 20, 0, 0),
+                    "11999999999",
+                    "Rua das Flores, 123"
+            );
+
+            when(pacienteRepository.findByCpf("12345678900"))
+                    .thenReturn(Optional.of(mock(Paciente.class)));
+
+            EntidadeJaExisteException ex = assertThrows(EntidadeJaExisteException.class,
+                    () -> cadastrarPacienteUseCase.cadastrar(dto));
+
+            assertEquals("Já existe um paciente cadastrado com este cpf!", ex.getMessage());
+            verify(pacienteRepository, never()).save(any());
         }
     }
 }
