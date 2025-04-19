@@ -43,6 +43,12 @@ public class AtendimentoController {
         return ResponseEntity.noContent().build();
     }
 
+    @PutMapping("/iniciarAtendimento/{id}")
+    public ResponseEntity<Void> alterarStatus(@PathVariable Long id) {
+        atualizarStatusAtendimentoUseCase.executar(id, converterParaStatusEnum("EM_ATENDIMENTO"));
+        return ResponseEntity.noContent().build();
+    }
+
     @PutMapping("/finalizar")
     public ResponseEntity<String> finalizarAtendimento(@RequestBody @Valid FinalizarAtendimentoDTO dto) {
         finalizarAtendimentoUseCase.executar(dto);

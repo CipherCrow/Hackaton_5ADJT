@@ -149,6 +149,19 @@ class AtendimentoControllerTest {
     }
 
     @Nested
+    class IniciarAtendimento {
+
+        @Test
+        void deveIniciarAtendimentoComSucesso() throws Exception {
+            mockMvc.perform(put("/filaAtendimento/iniciarAtendimento/1")
+                            .param("novoStatus", "EM_ATENDIMENTO"))
+                    .andExpect(status().isNoContent());
+
+            verify(atualizarStatusUseCase).executar(1L, StatusAtendimentoEnum.EM_ATENDIMENTO);
+        }
+    }
+
+    @Nested
     class finalizarAtendimento{
         @Test
         void deveRetornar200QuandoFinalizadoComSucesso() throws Exception {
