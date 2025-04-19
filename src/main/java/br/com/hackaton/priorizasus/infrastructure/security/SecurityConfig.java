@@ -20,30 +20,34 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         return http
-                .csrf(csrf -> csrf.disable()) // importante para travar ataques de csrf
-                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Sem sessão
-
-                //  APENAS PARA TESTE PARA DEIXAR VER O H2
-                .headers(headers -> headers.frameOptions( frameOptions -> frameOptions.disable() ))
+                .csrf(csrf -> csrf.disable())
+                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable()))
 
                 .authorizeHttpRequests(auth -> auth
+                        // Swagger/OpenAPI
+                        .requestMatchers("/swagger-ui/**").permitAll()
+                        .requestMatchers("/v3/api-docs", "/v3/api-docs/**").permitAll()
+
+                        // públicos
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         .requestMatchers("/publico/**").permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
 
-                        // PACIENTE pode acessar apenas /paciente/**
-                        .requestMatchers("/paciente/**").hasRole("PACIENTE")
+                        // paciência: só pacientes
+                        .requestMatchers("/paciente/**").hasAuthority("PACIENTE")
 
-                        // FUNCIONARIO pode acessar tudo EXCETO /paciente/**
-                        .requestMatchers("/funcionario/**").hasAnyRole("FUNCIONARIO", "ADMINISTRADOR")
-                        .requestMatchers("/admin/**").hasRole("ADMINISTRADOR")
+                        // funcionários e admins (mas não /paciente/**)
+                        .requestMatchers("/funcionario/**").hasAnyAuthority("FUNCIONARIO", "ADMINISTRADOR")
+                        .requestMatchers("/admin/**").hasAuthority("ADMINISTRADOR")
 
-                        // Os administradores acessam tudo
-                        .anyRequest().hasRole("ADMINISTRADOR")
+                        // todo o resto só admin
+                        .anyRequest().hasAuthority("ADMINISTRADOR")
                 )
+
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
+
 }
 

@@ -1,14 +1,15 @@
 -- Usuários
 INSERT INTO usuario (id, login, senha, permissao)
 VALUES 
-    (1001, 'admin', '$2a$10$J1jCNn8BR3Dy3t6wOH3t/Ocya7R.KkgPbNayRG9Mw5BkBiwgVloUq', 'ADMINISTRADOR'),
-    (1002, 'visualizador', '$2a$10$J1jCNn8BR3Dy3t6wOH3t/Ocya7R.KkgPbNayRG9Mw5BkBiwgVloUq', 'VISUALIZADOR'),
-    (1003, 'atendente', '$2a$10$J1jCNn8BR3Dy3t6wOH3t/Ocya7R.KkgPbNayRG9Mw5BkBiwgVloUq', 'FUNCIONARIO'),
-    (1004, 'doutora', '$2a$10$J1jCNn8BR3Dy3t6wOH3t/Ocya7R.KkgPbNayRG9Mw5BkBiwgVloUq', 'FUNCIONARIO'),
-	(1005, 'EnfermeiroAlegria', '$2a$10$J1jCNn8BR3Dy3t6wOH3t/Ocya7R.KkgPbNayRG9Mw5BkBiwgVloUq', 'FUNCIONARIO'),
-	(1, 'paciente0', '$2a$10$J1jCNn8BR3Dy3t6wOH3t/Ocya7R.KkgPbNayRG9Mw5BkBiwgVloUq', 'PACIENTE'),
-	(2, 'paciente1', '$2a$10$J1jCNn8BR3Dy3t6wOH3t/Ocya7R.KkgPbNayRG9Mw5BkBiwgVloUq', 'PACIENTE'),
-	(3, 'paciente2', '$2a$10$J1jCNn8BR3Dy3t6wOH3t/Ocya7R.KkgPbNayRG9Mw5BkBiwgVloUq', 'PACIENTE');
+    (1001, 'admin', '$2a$10$A1KFF1KFSHFieWdKwUz7deE14nsjOsYoe.gA3EkFCAyjAfxkP8Una', 'ADMINISTRADOR'),
+    (1002, 'visualizador', '$2a$10$A1KFF1KFSHFieWdKwUz7deE14nsjOsYoe.gA3EkFCAyjAfxkP8Una', 'VISUALIZADOR'),
+    (1003, 'atendente', '$2a$10$A1KFF1KFSHFieWdKwUz7deE14nsjOsYoe.gA3EkFCAyjAfxkP8Una', 'FUNCIONARIO'),
+    (1004, 'doutora', '$2a$10$A1KFF1KFSHFieWdKwUz7deE14nsjOsYoe.gA3EkFCAyjAfxkP8Una', 'FUNCIONARIO'),
+	(1005, 'EnfermeiroAlegria', '$2a$10$A1KFF1KFSHFieWdKwUz7deE14nsjOsYoe.gA3EkFCAyjAfxkP8Una', 'FUNCIONARIO'),
+	(1, 'paciente0', '$2a$10$A1KFF1KFSHFieWdKwUz7deE14nsjOsYoe.gA3EkFCAyjAfxkP8Una', 'PACIENTE'),
+	(2, 'paciente1', '$2a$10$A1KFF1KFSHFieWdKwUz7deE14nsjOsYoe.gA3EkFCAyjAfxkP8Una', 'PACIENTE'),
+	(3, 'paciente2', '$2a$10$A1KFF1KFSHFieWdKwUz7deE14nsjOsYoe.gA3EkFCAyjAfxkP8Una', 'PACIENTE'),
+    (4, 'juiaDoTeste', '$2a$10$A1KFF1KFSHFieWdKwUz7deE14nsjOsYoe.gA3EkFCAyjAfxkP8Una', 'PACIENTE');
 
 -- Profissionais de saúde
 INSERT INTO profissional_saude (id, nome, crm, especialidade, usuario_id)
@@ -30,7 +31,7 @@ VALUES
 	,(7, 'Gustavo Lima', '0000000006', '1996-01-01T00:00:00', '11999990006', 'Rua Gustavo Lima, 123', NULL)
 	,(8, 'Helena Gomes', '0000000007', '1997-01-01T00:00:00', '11999990007', 'Rua Helena Gomes, 123', NULL)
 	,(9, 'Igor Barros', '0000000008', '1998-01-01T00:00:00', '11999990008', 'Rua Igor Barros, 123', NULL)
-	,(10, 'Julia Ramos', '0000000009', '1999-01-01T00:00:00', '11999990009', 'Rua Julia Ramos, 123', NULL);
+	,(10, 'Julia Ramos', '0000000009', '1999-01-01T00:00:00', '11999990009', 'Rua Julia Ramos, 123', 4);
 
 -- Fila de Triagem
 

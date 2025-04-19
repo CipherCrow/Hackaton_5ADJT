@@ -9,16 +9,18 @@ import br.com.hackaton.priorizasus.dto.RealizarTriagemRequestDTO;
 import br.com.hackaton.priorizasus.dto.TriagemResponseDTO;
 import br.com.hackaton.priorizasus.enums.StatusTriagemEnum;
 import br.com.hackaton.priorizasus.exception.EnumInvalidoException;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@Tag(name = "Triagem", description = "Endpoints para controle e gerenciamento da fila e das triagens.")
+@RestController
 @RequestMapping("/triagem")
 @RequiredArgsConstructor
 public class TriagemController {
@@ -31,16 +33,28 @@ public class TriagemController {
     /*TRIAGEM*/
     private final RealizarTriagemUseCase realizarTriagemUseCase;
 
+    @Operation(
+            summary = "Realiza a busca das proximas pessoas aguardando triagem",
+            description = "Realiza a busca das proximas 10 pessoas aguardando triagem."
+    )
     @GetMapping("/filaTriagem/aguardandoTriagem")
     public ResponseEntity<List<FilaTriagemResponseDTO>> buscarProximosAguardando() {
         return ResponseEntity.ok(buscarProximosAguardando.buscarProximos());
     }
 
+    @Operation(
+            summary = "Realiza a busca por id ou cpf",
+            description = "Realiza a busca na fila de traigem pelo id da fila de triagem ou pelo cpf aguardando."
+    )
     @GetMapping("/filaTriagem/buscarPorIdOuCpf/{idCpf}")
     public ResponseEntity<FilaTriagemResponseDTO> buscarPorIdOuCpf(@PathVariable String idCpf) {
         return ResponseEntity.ok(buscarPacienteFilaPorCpfUseCase.buscar(idCpf));
     }
 
+    @Operation(
+            summary = "Altera Status da fila de triagem",
+            description = "Altera o Status da fila de triagem."
+    )
     @PutMapping("/filaTriagem/alterarStatus/{id}")
     public ResponseEntity<String> alterarStatus(
             @PathVariable Long id,
@@ -62,11 +76,11 @@ public class TriagemController {
 
 
     @Operation(
-            summary = "Altera Status da fila de triagem",
-            description = "Altera o Status da fila de triagem."
+            summary = "Finaliza a triagem",
+            description = "Finaliza a triagem e passa o paciente para a fila de atendimento."
     )
     @PostMapping("/realizar")
-    public ResponseEntity<TriagemResponseDTO> realizarTriagem(@RequestBody @Valid RealizarTriagemRequestDTO dto) {
+    public ResponseEntity<TriagemResponseDTO> finalizarTriagem(@RequestBody @Valid RealizarTriagemRequestDTO dto) {
         TriagemResponseDTO response = realizarTriagemUseCase.realizarTriagem(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }

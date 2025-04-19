@@ -20,7 +20,7 @@ public class BuscarFilaAtendimentoPorIdOuCpfUseCase {
 
         if (idOuCpf.length() == 11 && idOuCpf.matches("\\d+")) {
             // É um CPF
-            atendimento = filaAtendimentoRepository.findByTriagem_Paciente_CpfAAndStatusAtendimentoEnum(idOuCpf, StatusAtendimentoEnum.PENDENTE)
+            atendimento = filaAtendimentoRepository.findByTriagem_Paciente_CpfAndStatusAtendimentoEnum(idOuCpf, StatusAtendimentoEnum.PENDENTE)
                     .orElseThrow(() -> new EntidadeNaoEncontradaException("Fila não encontrada por CPF"));
         } else {
             // Tenta converter para ID
