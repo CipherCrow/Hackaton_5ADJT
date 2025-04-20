@@ -85,6 +85,3 @@ Se estiver em duvida do processo, temos o event storm documentado no Miro:
 ```bash 
 📎 https://miro.com/app/board/uXjVIHkt5zk=/?share_link_id=590168005712
 ```
-<html>
-<iframe width="800" height="450" src="https://miro.com/app/live-embed/uXjVIHkt5zk=/?moveToViewport=1313,-1994,5643,2839&embedId=56478744932" frameborder="0" scrolling="no" allow="fullscreen; clipboard-read; clipboard-write" allowfullscreen></iframe>
-</html>
