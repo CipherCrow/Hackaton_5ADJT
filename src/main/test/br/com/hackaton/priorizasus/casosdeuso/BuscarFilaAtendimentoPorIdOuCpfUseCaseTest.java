@@ -64,7 +64,7 @@ class BuscarFilaAtendimentoPorIdOuCpfUseCaseTest {
             fila.setTempoEsperaEstimado(LocalTime.of(0, 45));
             fila.setStatusAtendimentoEnum(StatusAtendimentoEnum.PENDENTE);
 
-            when(filaAtendimentoRepository.findByTriagem_Paciente_Cpf(cpf)).thenReturn(Optional.of(fila));
+            when(filaAtendimentoRepository.findByTriagem_Paciente_CpfAndStatusAtendimentoEnum(cpf,StatusAtendimentoEnum.PENDENTE)).thenReturn(Optional.of(fila));
 
             FilaAtendimentoDTO dto = useCase.executar(cpf);
 
@@ -76,7 +76,7 @@ class BuscarFilaAtendimentoPorIdOuCpfUseCaseTest {
         @Test
         void deveLancarExcecaoQuandoNaoEncontrarFilaPorCpf() {
             String cpf = "12345678901";
-            when(filaAtendimentoRepository.findByTriagem_Paciente_Cpf(cpf)).thenReturn(Optional.empty());
+            when(filaAtendimentoRepository.findByTriagem_Paciente_CpfAndStatusAtendimentoEnum(cpf,StatusAtendimentoEnum.PENDENTE)).thenReturn(Optional.empty());
 
             EntidadeNaoEncontradaException ex = assertThrows(
                     EntidadeNaoEncontradaException.class,

@@ -12,5 +12,5 @@ import java.util.Optional;
 public interface FilaAtendimentoRepository extends JpaRepository<FilaAtendimento, Long> {
 
     List<FilaAtendimento> findByStatusAtendimentoEnum(StatusAtendimentoEnum statusAtendimento);
-    Optional<FilaAtendimento> findByTriagem_Paciente_Cpf(String cpf);
+    Optional<FilaAtendimento> findByTriagem_Paciente_CpfAndStatusAtendimentoEnum(String cpf, StatusAtendimentoEnum statusAtendimento);
 }

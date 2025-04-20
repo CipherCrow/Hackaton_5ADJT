@@ -3,6 +3,7 @@ package br.com.hackaton.priorizasus.casosdeuso;
 import br.com.hackaton.priorizasus.dto.PacienteCadastradoDTO;
 import br.com.hackaton.priorizasus.dto.PacienteParaCadastrarDTO;
 import br.com.hackaton.priorizasus.entities.Paciente;
+import br.com.hackaton.priorizasus.exception.EntidadeJaExisteException;
 import br.com.hackaton.priorizasus.mapper.PacienteMapper;
 import br.com.hackaton.priorizasus.repository.PacienteRepository;
 import jakarta.transaction.Transactional;
@@ -17,6 +18,11 @@ public class CadastrarPacienteUseCase {
     @Transactional
     public PacienteCadastradoDTO cadastrar(PacienteParaCadastrarDTO dto) {
         Paciente paciente = PacienteMapper.toEntity(dto);
+
+        if (pacienteRepository.findByCpf(paciente.getCpf()).isPresent()){
+            throw new EntidadeJaExisteException("Já existe um paciente cadastrado com este cpf!");
+        }
+
         Paciente salvo = pacienteRepository.save(paciente);
         return PacienteMapper.toDTO(salvo);
     }

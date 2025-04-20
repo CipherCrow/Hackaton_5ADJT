@@ -144,6 +144,30 @@ class TriagemControllerTest {
     }
 
     @Nested
+    class IniciarTriagem {
+
+        @Test
+        void deveConseguirIniciarTriagem() throws Exception {
+            mockMvc.perform(put(
+                            "/triagem/filaTriagem/iniciarTriagem/1"))
+                    .andExpect(status().isOk())
+                    .andExpect(content().string("Triagem iniciada com sucesso."));
+
+            verify(alterarStatusTriagemUseCase).alterarStatus(1L, StatusTriagemEnum.EM_ANDAMENTO);
+        }
+
+        @Test
+        void deveRetornar404QuandoIdNaoExistir() throws Exception {
+            doThrow(new EntidadeNaoEncontradaException("Paciente não encontrado"))
+                    .when(alterarStatusTriagemUseCase).alterarStatus(99L, StatusTriagemEnum.EM_ANDAMENTO);
+
+            mockMvc.perform(put("/triagem/filaTriagem/iniciarTriagem/99"))
+                    .andExpect(status().isNotFound())
+                    .andExpect(content().string("Paciente não encontrado"));
+        }
+    }
+
+    @Nested
     class RealizarTriagemEndpointTests {
 
         @Test
