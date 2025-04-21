@@ -12,6 +12,7 @@ import br.com.hackaton.priorizasus.repository.PacienteRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -21,8 +22,11 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class RegistrarChegadaUseCase {
 
+    @Autowired
     private PacienteRepository pacienteRepository;
+    @Autowired
     private FilaTriagemRepository filaTriagemRepository;
+    @Autowired
     private FilaAtendimentoRepository filaAtendimentoRepository;
 
     @Transactional

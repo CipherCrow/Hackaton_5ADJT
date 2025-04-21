@@ -16,7 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -91,7 +91,7 @@ class AdministrativoControllerTest {
         @Test
         void deveCadastrarPacienteComSucesso() throws Exception {
             PacienteParaCadastrarDTO dto = new PacienteParaCadastrarDTO(
-                    "João da Silva", "12345678900", LocalDateTime.now().minusYears(20),
+                    "João da Silva", "12345678900", LocalDate.now().minusYears(20),
                     "11999999999", "Rua Teste, 123");
 
             PacienteCadastradoDTO retorno = new PacienteCadastradoDTO(1L, "João da Silva", "12345678900");
@@ -158,7 +158,7 @@ class AdministrativoControllerTest {
         @Test
         void deveAtualizarPacienteComSucesso() throws Exception {
             PacienteParaCadastrarDTO dto = new PacienteParaCadastrarDTO(
-                    "Novo Nome", "98765432100", LocalDateTime.now().minusYears(25),
+                    "Novo Nome", "98765432100", LocalDate.now().minusYears(25),
                     "11988887777", "Nova Rua");
 
             mockMvc.perform(put("/administrativo/atualizarPaciente/1")
@@ -171,7 +171,7 @@ class AdministrativoControllerTest {
         @Test
         void deveRetornar404AoAtualizarPacienteInexistente() throws Exception {
             PacienteParaCadastrarDTO dto = new PacienteParaCadastrarDTO(
-                    "Novo Nome", "98765432100", LocalDateTime.now().minusYears(25),
+                    "Novo Nome", "98765432100", LocalDate.now().minusYears(25),
                     "11988887777", "Nova Rua");
 
             doThrow(new EntidadeNaoEncontradaException("Paciente não encontrado"))

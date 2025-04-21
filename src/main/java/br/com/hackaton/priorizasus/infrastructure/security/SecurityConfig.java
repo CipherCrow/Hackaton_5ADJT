@@ -35,11 +35,13 @@ public class SecurityConfig {
                         .requestMatchers("/h2-console/**").permitAll()
 
                         // paciência: só pacientes
-                        .requestMatchers("/paciente/**").hasAuthority("PACIENTE")
+                        .requestMatchers("/paciente/**").hasAnyAuthority("PACIENTE", "ADMINISTRADOR")
 
                         // funcionários e admins (mas não /paciente/**)
-                        .requestMatchers("/funcionario/**").hasAnyAuthority("FUNCIONARIO", "ADMINISTRADOR")
-                        .requestMatchers("/admin/**").hasAuthority("ADMINISTRADOR")
+                        .requestMatchers("/filaAtendimento/**").hasAnyAuthority("FUNCIONARIO", "ADMINISTRADOR")
+                        .requestMatchers("/recepcao/**").hasAnyAuthority("FUNCIONARIO", "ADMINISTRADOR")
+                        .requestMatchers("/administrativo/**").hasAnyAuthority("FUNCIONARIO", "ADMINISTRADOR")
+                        .requestMatchers("/triagem/**").hasAnyAuthority("FUNCIONARIO", "ADMINISTRADOR")
 
                         // todo o resto só admin
                         .anyRequest().hasAuthority("ADMINISTRADOR")

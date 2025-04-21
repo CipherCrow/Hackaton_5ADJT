@@ -67,6 +67,27 @@ class AlterarStatusTriagemFilaUseCaseTest {
         verify(filaTriagemRepository).findById(idInvalido);
         verify(filaTriagemRepository, never()).save(any());
     }
+
+    @Test
+    void deveLancarExcecaoSeStatusTriagemForDiferenteDeAguardando() {
+        // Arrange
+        Long id = 1L;
+        FilaTriagem fila = new FilaTriagem();
+        fila.setId(id);
+        fila.setStatusTriagem(StatusTriagemEnum.TRIAGEM_REALIZADA);
+
+        when(filaTriagemRepository.findById(id)).thenReturn(Optional.of(fila));
+
+        // Act + Assert
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
+                useCase.alterarStatus(id, StatusTriagemEnum.EM_ANDAMENTO)
+        );
+
+        assertEquals("Apenas é possível iniciar triagens para quem está aguardando!", exception.getMessage());
+
+        verify(filaTriagemRepository, times(1)).findById(id);
+        verify(filaTriagemRepository, never()).save(any()); // Nunca deve salvar
+    }
 }
 
 

@@ -3,14 +3,13 @@ package br.com.hackaton.priorizasus.casosdeuso;
 import br.com.hackaton.priorizasus.dto.PacienteCadastradoDTO;
 import br.com.hackaton.priorizasus.dto.PacienteParaCadastrarDTO;
 import br.com.hackaton.priorizasus.entities.Paciente;
-import br.com.hackaton.priorizasus.entities.Usuario;
 import br.com.hackaton.priorizasus.exception.EntidadeJaExisteException;
 import br.com.hackaton.priorizasus.repository.PacienteRepository;
 import org.junit.jupiter.api.*;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -48,7 +47,7 @@ class CadastrarPacienteUseCaseTest {
             PacienteParaCadastrarDTO dto = new PacienteParaCadastrarDTO(
                     "João Silva",
                     "12345678900",
-                    LocalDateTime.of(1990, 5, 20, 0, 0),
+                    LocalDate.of(1990, 5, 20),
                     "11999999999",
                     "Rua das Flores, 123"
             );
@@ -78,7 +77,7 @@ class CadastrarPacienteUseCaseTest {
             PacienteParaCadastrarDTO dto = new PacienteParaCadastrarDTO(
                     "João Silva",
                     "12345678900",
-                    LocalDateTime.of(1990, 5, 20, 0, 0),
+                    LocalDate.of(1990, 5, 20),
                     "11999999999",
                     "Rua das Flores, 123"
             );

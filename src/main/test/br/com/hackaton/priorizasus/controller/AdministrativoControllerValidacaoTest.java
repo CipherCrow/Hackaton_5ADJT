@@ -16,7 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -89,7 +89,7 @@ class AdministrativoControllerValidacaoTest {
         @Test
         void deveRetornar400QuandoNomeEhVazio() throws Exception {
             PacienteParaCadastrarDTO dto = new PacienteParaCadastrarDTO(
-                    "", "12345678900", LocalDateTime.now().minusYears(20),
+                    "", "12345678900", LocalDate.now().minusYears(20),
                     "11999999999", "Rua Teste");
 
             mockMvc.perform(post("/administrativo/cadastrarPaciente")
@@ -102,7 +102,7 @@ class AdministrativoControllerValidacaoTest {
         @Test
         void deveRetornar400QuandoCpfEhVazio() throws Exception {
             PacienteParaCadastrarDTO dto = new PacienteParaCadastrarDTO(
-                    "Galinacio", "", LocalDateTime.now().minusYears(20),
+                    "Galinacio", "", LocalDate.now().minusYears(20),
                     "11999999999", "Rua Teste");
 
             mockMvc.perform(post("/administrativo/cadastrarPaciente")
@@ -115,7 +115,7 @@ class AdministrativoControllerValidacaoTest {
         @Test
         void deveRetornar400QuandoDataNascimentoEhFutura() throws Exception {
             PacienteParaCadastrarDTO dto = new PacienteParaCadastrarDTO(
-                    "Fulano", "12345678900", LocalDateTime.now().plusDays(1),
+                    "Fulano", "12345678900", LocalDate.now().plusDays(1),
                     "11999999999", "Rua Teste");
 
             mockMvc.perform(post("/administrativo/cadastrarPaciente")

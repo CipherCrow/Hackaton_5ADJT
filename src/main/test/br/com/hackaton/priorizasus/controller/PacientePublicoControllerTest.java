@@ -15,7 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -58,7 +58,7 @@ class PacientePublicoControllerTest {
         PacienteCadastroPublicoDTO dto = new PacienteCadastroPublicoDTO(
                 "Ana Maria",
                 "12345678900",
-                LocalDateTime.of(1990, 5, 10, 0, 0),
+                LocalDate.of(1990, 5, 10),
                 "11988887777",
                 "Rua das Flores",
                 "ana_login",
@@ -78,7 +78,7 @@ class PacientePublicoControllerTest {
         PacienteCadastroPublicoDTO dto = new PacienteCadastroPublicoDTO(
                 "", // nome inválido
                 "", // cpf inválido
-                LocalDateTime.now().plusDays(1), // data futura
+                LocalDate.now().plusDays(1), // data futura
                 "11988887777",
                 "Rua das Flores",
                 "", // login inválido
@@ -103,7 +103,7 @@ class PacientePublicoControllerTest {
         PacienteCadastroPublicoDTO dto = new PacienteCadastroPublicoDTO(
                 "João",
                 "98765432100",
-                LocalDateTime.of(1985, 3, 15, 0, 0),
+                LocalDate.of(1985, 3, 15),
                 "11977776666",
                 "Av. Principal",
                 "joao123",

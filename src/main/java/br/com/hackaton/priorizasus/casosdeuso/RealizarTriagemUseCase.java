@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +26,7 @@ public class RealizarTriagemUseCase {
     private final FilaAtendimentoRepository filaAtendimentoRepository;
     private final FilaTriagemRepository filaTriagemRepository;
     private final CalcularTempoEstimadoUseCase calcularTempoEstimadoUseCase;
+    private final VisualizarSintomaPorIdUseCase visualizarSintomaPorIdUseCase;
 
     @Transactional
     public TriagemResponseDTO realizarTriagem(RealizarTriagemRequestDTO dto) {
@@ -36,7 +39,14 @@ public class RealizarTriagemUseCase {
         Triagem triagem = new Triagem();
         triagem.setPaciente(paciente);
         triagem.setProfissional(profissional);
-        triagem.setSintomas(dto.sintomas());
+
+        Set<Sintoma> sintomasEncontrados =  dto.sintomas().stream()
+                .map(s -> visualizarSintomaPorIdUseCase.buscarSintoma(s.getId())
+                        )
+                .map(s -> Sintoma.builder().id(s.id()).gravidade(s.gravidade()).descricao(s.descricao()).build())
+                .collect(Collectors.toSet());
+
+        triagem.setSintomas(sintomasEncontrados);
         triagem.setDataTriagem(LocalDateTime.now());
         // Se a prioridade for manual, usamos o valor enviado; senão, calculamos automaticamente
         if (Boolean.TRUE.equals(dto.prioridadeManual()) && dto.nivelPrioridadeManual() != null) {
@@ -62,7 +72,7 @@ public class RealizarTriagemUseCase {
         filaAtendimentoRepository.save(filaAtendimento);
 
         // Atualiza o registro na FilaTriagem para TRIAGEM_REALIZADA
-        FilaTriagem filaTriagem = filaTriagemRepository.findByPacienteIdAndStatusTriagem(paciente.getId(),StatusTriagemEnum.AGUARDANDO)
+        FilaTriagem filaTriagem = filaTriagemRepository.findByPacienteIdAndStatusTriagem(paciente.getId(),StatusTriagemEnum.EM_ANDAMENTO)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Paciente não encontrado na fila de triagem"));
         filaTriagem.setStatusTriagem(StatusTriagemEnum.TRIAGEM_REALIZADA);
         filaTriagemRepository.save(filaTriagem);

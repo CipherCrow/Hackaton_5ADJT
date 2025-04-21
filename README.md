@@ -26,6 +26,9 @@ O **PriorizaSUS** foi desenvolvido como um MVP para um hackathon de pós-gradua�
 - Docker
 
 ---
+Observação:
+* Configuramos o projeto para não ser possível acessar o h2, exceto caso esteja rodando o projeto em debug. 
+Desta forma, acessar o banco h2 por meio do conteiner dockerizado não irá funcionar!
 
 ## 🚀 Como Rodar o Projeto (Docker)
 
@@ -42,12 +45,7 @@ docker build -t priorizasus
 ```bash 
 docker run -p 8080:8080 priorizasus
 ```
-4. Para consultar o estado do banco acesse:
-```bash 
-* http://localhost:8080/h2-console/
-* (JDBC URL: jdbc:h2:mem:priorizasus | User: sa | Senha: em branco)
-```
-5. Também é possível utilizar do nosso swagger para fazer as requisições e testes.
+4. É possível utilizar do nosso swagger para fazer as requisições e testes.
 ```bash 
 📎 http://localhost:8080/swagger-ui/index.html - Swagger
 ```
@@ -58,7 +56,6 @@ docker run -p 8080:8080 priorizasus
 O projeto também se encontra na plataforma Render, entretanto recomendamos a utilização da API via Docker localhost devido aos seguintes pontos:
 * Por estarmos utilizando o plano free, terá um cold start e pode demorar para executar.
 * Devido a URL pública, teus testes podem ser afetados por outro usuário.
-* Configuramos o projeto para não ser possível acessar o h2 fora do localhost, então acessar o banco h2 pelo render não irá funcionar!
 
 ###  Processo
 1. Realizar requisições para nossa url pública.
