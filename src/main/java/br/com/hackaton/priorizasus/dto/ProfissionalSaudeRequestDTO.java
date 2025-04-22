@@ -15,7 +15,7 @@ public record ProfissionalSaudeRequestDTO(
         String crm,
 
         @Schema(description = "Area do Profissional",
-                example = "Atendente")
+                example = "Super Médico")
         @NotBlank(message = "Especialidade é obrigatória")
         String especialidade,
         Long usuarioId

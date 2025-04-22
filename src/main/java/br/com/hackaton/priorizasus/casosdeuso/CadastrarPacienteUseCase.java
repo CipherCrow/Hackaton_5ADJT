@@ -19,7 +19,7 @@ public class CadastrarPacienteUseCase {
     public PacienteCadastradoDTO cadastrar(PacienteParaCadastrarDTO dto) {
         Paciente paciente = PacienteMapper.toEntity(dto);
 
-        if (pacienteRepository.findByCpf(paciente.getCpf()).isPresent()){
+        if (!pacienteRepository.findByCpf(paciente.getCpf()).isEmpty()){
             throw new EntidadeJaExisteException("Já existe um paciente cadastrado com este cpf!");
         }
 

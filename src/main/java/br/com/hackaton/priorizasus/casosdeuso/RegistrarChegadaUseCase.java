@@ -34,6 +34,12 @@ public class RegistrarChegadaUseCase {
         Paciente paciente = pacienteRepository.findById(pacienteId)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Paciente não encontrado"));
 
+        // Se já existir o cpf na fila de triagem ou de atendimento não deixa
+        if(!filaAtendimentoRepository.findByTriagem_Paciente_CpfAndStatusAtendimentoEnum(paciente.getCpf(),StatusAtendimentoEnum.PENDENTE).isEmpty()||
+        !filaTriagemRepository.findByPacienteCpfAndStatusTriagem(paciente.getCpf(),StatusTriagemEnum.AGUARDANDO).isEmpty()){
+            throw new IllegalArgumentException("Já existe uma chegada com este paciente! Finalize ou cancele para começar uma nova!");
+        }
+
         if (Boolean.TRUE.equals(atendimentoAdministrativo)) {
             FilaAtendimento fila = new FilaAtendimento();
             fila.setAtendimentoAdministrativo(true);

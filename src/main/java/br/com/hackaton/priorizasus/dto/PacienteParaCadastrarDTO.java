@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public record PacienteParaCadastrarDTO(
 
@@ -15,10 +15,10 @@ public record PacienteParaCadastrarDTO(
         @Schema(description = "CPF do paciente", example = "12345678902")
         @NotBlank(message = "CPF é obrigatório")
         String cpf,
-        @Schema(description = "Data de nascimento do paciente",example = "1999-01-01T00:00:00")
+        @Schema(description = "Data de nascimento do paciente",example = "1999-01-01")
         @NotNull(message = "Data de nascimento é obrigatória")
         @Past(message="Data de nascimento deve estar no passado")
-        LocalDateTime dataNascimento,
+        LocalDate dataNascimento,
         @Schema(description = "Telefone do paciente",example = "11999990009")
         String telefone,
         @Schema(description = "Endereco do paciente",example = "Rua Julia Ramos, 123")

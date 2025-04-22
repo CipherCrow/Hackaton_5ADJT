@@ -23,7 +23,7 @@ public class PacientePublicoController {
 
     @Operation(
             summary = "Realiza o cadastro de um usuário",
-            description = "Realiza o cadastro de um usuário para um."
+            description = "Realiza o cadastro de um usuário junto com o paciente!"
     )
     @PostMapping("/cadastrar")
     public ResponseEntity<Void> cadastrar(@RequestBody @Valid PacienteCadastroPublicoDTO dto) {

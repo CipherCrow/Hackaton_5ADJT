@@ -29,7 +29,7 @@ public class CriarUsuarioPacienteUseCase {
             throw new IllegalArgumentException("Este paciente já possui um usuário vinculado.");
         }
 
-        if (usuarioRepository.findByLogin(dto.login()).isPresent()) {
+        if (!usuarioRepository.findByLogin(dto.login()).isEmpty()) {
             throw new IllegalArgumentException("Login já está em uso");
         }
 

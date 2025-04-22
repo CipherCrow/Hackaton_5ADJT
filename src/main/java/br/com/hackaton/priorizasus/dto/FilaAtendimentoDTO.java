@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public record FilaAtendimentoDTO(
+        Long idAtendimento,
         String nomePaciente,
         NivelPrioridadeEnum nivelPrioridade,
         LocalDateTime horarioEntrada,

@@ -9,11 +9,11 @@ public record CriarUsuarioPacienteDTO(
         @NotBlank(message = "Login é obrigatório!")
         String login,
         @Schema(description = "Senha do usuário",
-                example = "definitivamenteSegura123")
+                example = "123456")
         @NotBlank(message = "Senha é obrigatória!")
         String senha,
         @Schema(description = "Cpf do paciente já cadastrado",
-                example = "12345679802")
+                example = "12345678902")
         @NotBlank(message = "Cpf é obrigatório!")
         String cpf
 ) {}

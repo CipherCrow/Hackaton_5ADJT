@@ -42,43 +42,42 @@ public class FilaAtendimento {
 
     public void atualizarPesoFila() {
         long minutosEspera = Duration.between(horarioEntradaFila, LocalDateTime.now()).toMinutes();
+        double tempoCrescimento = Math.log(minutosEspera + 1); // Evita log(0)
 
         if (Boolean.TRUE.equals(atendimentoAdministrativo)) {
-            // administrativo cresce devagar
-            int pesoBase = 5;
-            this.pesoFila = pesoBase + (int) (minutosEspera * 0.3);
+            this.pesoFila = 5 + (int) (tempoCrescimento * 2.0);
         } else if (triagem != null && triagem.getNivelPrioridadeEnum() != null) {
             int prioridadePeso;
             double aceleradorTempo;
             switch (triagem.getNivelPrioridadeEnum()) {
                 case VERMELHO -> {
-                    prioridadePeso = 1000; // esse não entra na fila, mas por segurança
-                    aceleradorTempo = 1; // cresce no mesmo ritmo, já tem prioridade máxima
+                    prioridadePeso = 1000;
+                    aceleradorTempo = 1;
                 }
                 case LARANJA -> {
                     prioridadePeso = 600;
-                    aceleradorTempo = 0.9;
+                    aceleradorTempo = 0.5;
                 }
                 case AMARELO -> {
-                    prioridadePeso = 40;
-                    aceleradorTempo = 0.6;
+                    prioridadePeso = 80;            //Inicia com 80
+                    aceleradorTempo = 4.81;        // para atingir ~105 em 180 min
                 }
                 case VERDE -> {
-                    prioridadePeso = 20;
-                    aceleradorTempo = 1.0;
+                    prioridadePeso = 40;            // inicia com 40
+                    aceleradorTempo = 11.5;        // para atingir ~100 em 180 min
                 }
                 case AZUL -> {
-                    prioridadePeso = 10;
-                    aceleradorTempo = 1.2;
+                    prioridadePeso = 20;            // inicia com 20
+                    aceleradorTempo = 13.3;        // para atingir ~80 em 90 min
                 }
                 default -> {
                     prioridadePeso = 0;
                     aceleradorTempo = 1.0;
                 }
             }
-            this.pesoFila = prioridadePeso + (int) (minutosEspera * aceleradorTempo);
+            this.pesoFila = prioridadePeso + (int) (tempoCrescimento * aceleradorTempo);
         } else {
-            this.pesoFila = (int) (minutosEspera * 0.5);
+            this.pesoFila = (int) (tempoCrescimento * 1.2);
         }
     }
 

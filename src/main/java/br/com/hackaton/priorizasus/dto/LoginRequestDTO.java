@@ -5,11 +5,11 @@ import jakarta.validation.constraints.NotBlank;
 
 public record LoginRequestDTO(
         @Schema(description = "Nome de usuário usado no cadastro",
-                example = "JoaoMachucado")
+                example = "superPaciente")
         @NotBlank(message = "Deve ser inserido um usuario!")
         String usuario,
         @Schema(description = "Senha usada no cadastro",
-                example = "MachucadoJoao123")
+                example = "123456")
         @NotBlank(message = "Deve ser inserido uma senha!")
         String senha
 ) {}

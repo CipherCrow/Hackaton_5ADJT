@@ -15,7 +15,7 @@ public record RealizarTriagemRequestDTO (
      Long pacienteId,
 
     @Schema(description = "ID do profissional que realizou a triagem",
-            example = "2000")
+            example = "2003")
     @NotNull(message = "Profissional ID é obrigatório")
      Long profissionalId,
 
