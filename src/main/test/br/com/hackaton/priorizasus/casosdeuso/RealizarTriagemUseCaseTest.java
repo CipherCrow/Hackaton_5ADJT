@@ -1,6 +1,7 @@
 package br.com.hackaton.priorizasus.casosdeuso;
 
 import br.com.hackaton.priorizasus.dto.RealizarTriagemRequestDTO;
+import br.com.hackaton.priorizasus.dto.SintomaDTO;
 import br.com.hackaton.priorizasus.dto.TriagemResponseDTO;
 import br.com.hackaton.priorizasus.entities.*;
 import br.com.hackaton.priorizasus.enums.NivelPrioridadeEnum;
@@ -36,7 +37,12 @@ class RealizarTriagemUseCaseTest {
     @Mock
     private FilaTriagemRepository filaTriagemRepository;
     @Mock
+    private SintomaRepository sintomaRepository;
+    @Mock
     private CalcularTempoEstimadoUseCase calcularTempoEstimadoUseCase;
+    @Mock
+    private  VisualizarSintomaPorIdUseCase visualizarSintomaPorIdUseCase;
+
 
     private RealizarTriagemUseCase realizarTriagemUseCase;
 
@@ -51,13 +57,17 @@ class RealizarTriagemUseCaseTest {
     @BeforeEach
     void setUp() {
         openMocks = MockitoAnnotations.openMocks(this);
+
+        visualizarSintomaPorIdUseCase = new VisualizarSintomaPorIdUseCase(sintomaRepository);
+
         realizarTriagemUseCase = new RealizarTriagemUseCase(
                 pacienteRepository,
                 profissionalRepository,
                 triagemRepository,
                 filaAtendimentoRepository,
                 filaTriagemRepository,
-                calcularTempoEstimadoUseCase
+                calcularTempoEstimadoUseCase,
+                visualizarSintomaPorIdUseCase
         );
 
         paciente = new Paciente();
@@ -122,9 +132,10 @@ class RealizarTriagemUseCaseTest {
             when(profissionalRepository.findById(10L)).thenReturn(Optional.of(profissional));
             when(triagemRepository.save(any(Triagem.class))).thenReturn(triagem);
             when(filaAtendimentoRepository.save(any(FilaAtendimento.class))).thenReturn(filaAtendimento);
-            when(filaTriagemRepository.findByPacienteIdAndStatusTriagem(1L,StatusTriagemEnum.AGUARDANDO)).thenReturn(Optional.of(filaTriagem));
+            when(filaTriagemRepository.findByPacienteIdAndStatusTriagem(1L,StatusTriagemEnum.EM_ANDAMENTO)).thenReturn(Optional.of(filaTriagem));
             when(filaTriagemRepository.save(any(FilaTriagem.class))).thenReturn(filaTriagem);
-
+            when(sintomaRepository.findById(1L)).thenReturn(Optional.of(new Sintoma(1L, "Dor de cabeça", 3)));
+            when(sintomaRepository.findById(2L)).thenReturn(Optional.of(new Sintoma(2L, "Febre", 4)));
             TriagemResponseDTO responseDTO = realizarTriagemUseCase.realizarTriagem(requestDTO);
 
             assertNotNull(responseDTO);
@@ -136,7 +147,7 @@ class RealizarTriagemUseCaseTest {
             verify(profissionalRepository).findById(10L);
             verify(triagemRepository).save(any(Triagem.class));
             verify(filaAtendimentoRepository).save(any(FilaAtendimento.class));
-            verify(filaTriagemRepository).findByPacienteIdAndStatusTriagem(1L,StatusTriagemEnum.AGUARDANDO);
+            verify(filaTriagemRepository).findByPacienteIdAndStatusTriagem(1L,StatusTriagemEnum.EM_ANDAMENTO);
             verify(filaTriagemRepository).save(any(FilaTriagem.class));
         }
     }
@@ -199,13 +210,13 @@ class RealizarTriagemUseCaseTest {
             when(pacienteRepository.findById(1L)).thenReturn(Optional.of(paciente));
             when(profissionalRepository.findById(10L)).thenReturn(Optional.of(profissional));
             // Simula que o paciente não está na fila de triagem
-            when(filaTriagemRepository.findByPacienteIdAndStatusTriagem(1L,StatusTriagemEnum.AGUARDANDO)).thenReturn(Optional.empty());
-
+            when(filaTriagemRepository.findByPacienteIdAndStatusTriagem(1L,StatusTriagemEnum.EM_ANDAMENTO)).thenReturn(Optional.empty());
+            when(sintomaRepository.findById(1L)).thenReturn(Optional.of(new Sintoma(1L, "Dor", 2)));
             EntidadeNaoEncontradaException ex = assertThrows(EntidadeNaoEncontradaException.class,
                     () -> realizarTriagemUseCase.realizarTriagem(requestDTO));
 
             assertEquals("Paciente não encontrado na fila de triagem", ex.getMessage());
-            verify(filaTriagemRepository).findByPacienteIdAndStatusTriagem(1L,StatusTriagemEnum.AGUARDANDO);
+            verify(filaTriagemRepository).findByPacienteIdAndStatusTriagem(1L,StatusTriagemEnum.EM_ANDAMENTO);
         }
     }
 }

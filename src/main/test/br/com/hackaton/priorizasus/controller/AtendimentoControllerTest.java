@@ -75,6 +75,7 @@ class AtendimentoControllerTest {
         @Test
         void deveRetornarListaComSucesso() throws Exception {
             FilaAtendimentoDTO dto = new FilaAtendimentoDTO(
+                    1L,
                     "João",
                     NivelPrioridadeEnum.VERMELHO,
                     LocalDateTime.now(),
@@ -100,6 +101,7 @@ class AtendimentoControllerTest {
         @Test
         void deveRetornarDTOComSucesso() throws Exception {
             FilaAtendimentoDTO dto = new FilaAtendimentoDTO(
+                    1L,
                     "Maria",
                     NivelPrioridadeEnum.AMARELO,
                     LocalDateTime.now(),
@@ -155,7 +157,7 @@ class AtendimentoControllerTest {
         void deveIniciarAtendimentoComSucesso() throws Exception {
             mockMvc.perform(put("/filaAtendimento/iniciarAtendimento/1")
                             .param("novoStatus", "EM_ATENDIMENTO"))
-                    .andExpect(status().isNoContent());
+                    .andExpect(status().isOk());
 
             verify(atualizarStatusUseCase).executar(1L, StatusAtendimentoEnum.EM_ATENDIMENTO);
         }

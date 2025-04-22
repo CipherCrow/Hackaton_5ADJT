@@ -64,9 +64,9 @@ public class AtendimentoController {
             description = "Inicia o atendimento de um paciente na fila."
     )
     @PutMapping("/iniciarAtendimento/{id}")
-    public ResponseEntity<Void> iniciarAtendimento(@PathVariable Long id) {
+    public ResponseEntity<String> iniciarAtendimento(@PathVariable Long id) {
         atualizarStatusAtendimentoUseCase.executar(id, converterParaStatusEnum("EM_ATENDIMENTO"));
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok("Atendimento Iniciado!");
     }
 
     @Operation(

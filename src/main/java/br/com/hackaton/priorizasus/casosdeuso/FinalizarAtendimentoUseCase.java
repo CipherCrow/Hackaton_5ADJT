@@ -28,8 +28,8 @@ public class FinalizarAtendimentoUseCase {
         FilaAtendimento fila = filaAtendimentoRepository.findById(dto.idAtendimento())
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Atendimento não encontrado"));
 
-        if (!StatusAtendimentoEnum.PENDENTE.equals(fila.getStatusAtendimentoEnum())) {
-            throw new IllegalArgumentException("Apenas atendimentos pendentes podem ser finalizados");
+        if (!StatusAtendimentoEnum.EM_ATENDIMENTO.equals(fila.getStatusAtendimentoEnum())) {
+            throw new IllegalArgumentException("Apenas atendimentos em atendimento podem ser finalizados");
         }
 
         ProfissionalSaude profissional = profissionalSaudeRepository.findById(dto.idProfissional())

@@ -24,11 +24,11 @@ public class CadastrarPacientePublicamenteUseCase {
     public void executar(PacienteCadastroPublicoDTO dto) {
         // Validação de duplicidade
 
-        if (usuarioRepository.findByLogin(dto.login()).isPresent()) {
+        if (!usuarioRepository.findByLogin(dto.login()).isEmpty()) {
             throw new EntidadeJaExisteException("Já existe um usuário com esse login.");
         }
 
-        if (pacienteRepository.findByCpf(dto.cpf()).isPresent()) {
+        if (!pacienteRepository.findByCpf(dto.cpf()).isEmpty()) {
             throw new EntidadeJaExisteException("Já existe um paciente com esse CPF.");
         }
 

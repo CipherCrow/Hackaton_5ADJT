@@ -11,6 +11,7 @@ public class AtendimentoMapper {
 
     public static FilaAtendimentoDTO toDTO(FilaAtendimento atendimento) {
         return new FilaAtendimentoDTO(
+                atendimento.getId(),
                 atendimento.getTriagem().getPaciente().getNome(),
                 atendimento.getTriagem().getNivelPrioridadeEnum(),
                 atendimento.getHorarioEntradaFila(),

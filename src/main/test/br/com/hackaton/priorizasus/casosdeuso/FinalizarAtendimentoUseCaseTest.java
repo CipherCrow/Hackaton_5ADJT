@@ -64,7 +64,7 @@ class FinalizarAtendimentoUseCaseTest {
         fila = FilaAtendimento.builder()
                 .id(1L)
                 .triagem(triagem)
-                .statusAtendimentoEnum(StatusAtendimentoEnum.PENDENTE)
+                .statusAtendimentoEnum(StatusAtendimentoEnum.EM_ATENDIMENTO)
                 .atendimentoAdministrativo(false)
                 .horarioEntradaFila(LocalDateTime.now().minusMinutes(20))
                 .build();
@@ -152,7 +152,7 @@ class FinalizarAtendimentoUseCaseTest {
             IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
                     () -> useCase.executar(dto));
 
-            assertEquals("Apenas atendimentos pendentes podem ser finalizados", ex.getMessage());
+            assertEquals("Apenas atendimentos em atendimento podem ser finalizados", ex.getMessage());
         }
     }
 }

@@ -21,9 +21,15 @@ public class BuscarProximosAtendimentosUseCase {
     public List<FilaAtendimentoDTO> executar() {
         return filaAtendimentoRepository.findByStatusAtendimentoEnum(StatusAtendimentoEnum.PENDENTE).stream()
                 .sorted(Comparator.comparingInt((FilaAtendimento fila) -> {
-                            NivelPrioridadeEnum prioridade = fila.getTriagem().getNivelPrioridadeEnum();
-                        // Em cenários reais, o vermelho e laranja são casos extremos de vida ou morte, então damos uma trapaceada neles.
-                        // Prioridade absoluta para VERMELHO e LARANJA
+                            NivelPrioridadeEnum prioridade;
+                            // Se não tem triagem, significa que é um atendimento administrativo
+                            if(fila.getTriagem() == null){
+                                return 2;
+                            } else{
+                                prioridade = fila.getTriagem().getNivelPrioridadeEnum();
+                            }
+                        // Em cenários reais, o vermelho e laranja são casos extremos de vida ou morte
+                        // Prioridade absoluta para VERMELHO e altissima para LARANJA
                             if (prioridade == NivelPrioridadeEnum.VERMELHO) {
                                 return 0;
                             } else if (prioridade == NivelPrioridadeEnum.LARANJA) {

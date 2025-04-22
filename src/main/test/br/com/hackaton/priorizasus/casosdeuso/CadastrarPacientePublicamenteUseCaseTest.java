@@ -15,7 +15,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -54,7 +54,7 @@ class CadastrarPacientePublicamenteUseCaseTest {
         PacienteCadastroPublicoDTO dto = new PacienteCadastroPublicoDTO(
                 "Maria Silva",
                 "12345678900",
-                LocalDateTime.of(1995, 7, 20, 0, 0),
+                LocalDate.of(1995, 7, 20),
                 "11999998888",
                 "Rua das Palmeiras",
                 "maria_login",
@@ -91,7 +91,7 @@ class CadastrarPacientePublicamenteUseCaseTest {
         PacienteCadastroPublicoDTO dto = new PacienteCadastroPublicoDTO(
                 "Carlos",
                 "99999999999",
-                LocalDateTime.of(1990, 1, 1, 0, 0),
+                LocalDate.of(1990, 1, 1),
                 "11999999999",
                 "Rua XPTO",
                 "login_existente",
@@ -114,7 +114,7 @@ class CadastrarPacientePublicamenteUseCaseTest {
         PacienteCadastroPublicoDTO dto = new PacienteCadastroPublicoDTO(
                 "Joana",
                 "11122233344",
-                LocalDateTime.of(1998, 4, 12, 0, 0),
+                LocalDate.of(1998, 4, 12),
                 "11987654321",
                 "Rua Nova",
                 "joana_login",

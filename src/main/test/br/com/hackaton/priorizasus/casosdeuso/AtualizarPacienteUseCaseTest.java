@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -48,13 +48,13 @@ class AtualizarPacienteUseCaseTest {
                     .nome("Antigo")
                     .telefone("0000")
                     .endereco("Antigo")
-                    .dataNascimento(LocalDateTime.of(1990, 1, 1, 0, 0))
+                    .dataNascimento(LocalDate.of(1990, 1, 1))
                     .build();
 
             PacienteParaCadastrarDTO dto = new PacienteParaCadastrarDTO(
                     "Novo",
                     "12345678900",
-                    LocalDateTime.of(1985, 5, 15, 0, 0),
+                    LocalDate.of(1985, 5, 15),
                     "9999",
                     "Novo Endereço"
             );
@@ -67,7 +67,7 @@ class AtualizarPacienteUseCaseTest {
             assertEquals("Novo", pacienteExistente.getNome());
             assertEquals("9999", pacienteExistente.getTelefone());
             assertEquals("Novo Endereço", pacienteExistente.getEndereco());
-            assertEquals(LocalDateTime.of(1985, 5, 15, 0, 0), pacienteExistente.getDataNascimento());
+            assertEquals(LocalDate.of(1985, 5, 15), pacienteExistente.getDataNascimento());
         }
 
         @Test

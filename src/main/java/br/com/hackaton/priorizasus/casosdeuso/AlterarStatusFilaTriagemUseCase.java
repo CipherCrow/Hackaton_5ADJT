@@ -19,6 +19,10 @@ public class AlterarStatusFilaTriagemUseCase {
         FilaTriagem fila = filaTriagemRepository.findById(id)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Paciente na fila de triagem não encontrado."));
 
+        if(novoStatus.name().equals("EM_ANDAMENTO")
+                && !fila.getStatusTriagem().name().equals("AGUARDANDO")) {
+            throw new IllegalArgumentException("Apenas é possível iniciar triagens para quem está aguardando!");
+        }
         fila.setStatusTriagem(novoStatus);
         filaTriagemRepository.save(fila);
     }

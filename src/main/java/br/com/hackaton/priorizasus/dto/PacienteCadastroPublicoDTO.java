@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Past;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public record PacienteCadastroPublicoDTO(
         @Schema(description = "Nome da pessoa para cadastro",
@@ -13,17 +13,17 @@ public record PacienteCadastroPublicoDTO(
         String nome,
 
         @Schema(description = "CPF da pessoa para cadastro",
-                example = "12354698702")
+                example = "12345678900")
         @NotBlank(message = "CPF é obrigatório.")
         String cpf,
 
         @Schema(description = "Data de nascimento da pessoa para cadastro",
-                example = "2025-04-19T00:00")
+                example = "2025-04-19")
         @Past(message = "Data de nascimento deve ser no passado.")
-        LocalDateTime dataNascimento,
+        LocalDate dataNascimento,
 
         @Schema(description = "Telefone para contato da pessoa para cadastro",
-                example = "JoaoMachucado")
+                example = "0066660315")
         String telefone,
 
         @Schema(description = "Endereço da pessoa para cadastro",
@@ -36,7 +36,7 @@ public record PacienteCadastroPublicoDTO(
         String login,
 
         @Schema(description = "Senha para ser usada no aplicativo",
-                example = "NamoradaDoEspinafre123")
+                example = "123456")
         @NotBlank(message = "Senha é obrigatória.")
         String senha
 ) {}
