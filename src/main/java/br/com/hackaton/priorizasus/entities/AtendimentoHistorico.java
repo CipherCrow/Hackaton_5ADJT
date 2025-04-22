@@ -20,7 +20,6 @@ public class AtendimentoHistorico {
     private Long id;
 
     @OneToOne
-    @NotNull
     private Triagem triagem;
 
     @NotBlank
